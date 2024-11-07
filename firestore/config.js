@@ -12,8 +12,18 @@ const firebaseConfig = {
   appId: FIREBASE_APP_ID
 } 
 
-const app = initializeApp(firebaseConfig);
-const firestore = getFirestore(app);
+let app, firestore;
+try {
+  app = initializeApp(firebaseConfig);
+  firestore = getFirestore(app);
+} catch (error) {
+  console.error("Firebase initialization error:", error);
+  if (error.code === 'app/invalid-configuration') {
+    console.error("Invalid Firebase configuration. Check your API key and project settings.");
+  } else {
+    console.error("An unknown error occurred during Firebase initialization.");
+  }
+}
 
 const addList = async (userId, listData) => {
   try {

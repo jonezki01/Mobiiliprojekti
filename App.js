@@ -9,6 +9,15 @@ import ListScreen from './screens/ListScreen';
 import ItemScreen from './screens/ChosenListScreen';
 
 /* export default function App() {
+
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+
+  const theme = useTheme(isDarkTheme);
+
+  const toggleTheme = () => {
+    setIsDarkTheme(prevTheme => !prevTheme);
+  };
+
   return (
     <View style={styles.container}>
       <Text>Open up App.js to start working on your app!</Text>
@@ -33,11 +42,27 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  header: {
+    height: 50,
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '90%',
+    marginTop: 10,
+    marginBottom: 40,
+  },
+  footer: {
+    height: 50,
   },
 });
 /*-----------Testausta varten--------------*/

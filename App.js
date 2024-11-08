@@ -11,10 +11,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ListScreen from './screens/ListScreen';
 import ItemScreen from './screens/ChosenListScreen';
+import CurrencyCalculator from './screens/CalculatorScreen';
 
-
+/*
 //--------------Joonan dark ja light mode---------------//
-/* export default function App() {
+ export default function App() {
 
   const [isDarkTheme, setIsDarkTheme] = useState(false);
 
@@ -71,18 +72,23 @@ const styles = StyleSheet.create({
   footer: {
     height: 50,
   },
-}); */
+}); 
 //--------------Joonan dark ja light mode---------------//
+
+*/
+/*-----------Testausta varten-------------- */
 
 const Stack = createStackNavigator();
 
-/*-----------Testausta varten--------------*/
+
+
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Lists">
+      <Stack.Navigator initialRouteName="CurrencyCalculator">
         <Stack.Screen name="Lists" component={ListScreen} />
         <Stack.Screen name="Items" component={ItemScreen} />
+        <Stack.Screen name="CurrencyCalculator" component={CurrencyCalculator}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -112,4 +118,4 @@ const styles = StyleSheet.create({
     height: 50,
   },
 });
-/*-----------Testausta varten--------------*/
+/*-----------Testausta varten-------------- */

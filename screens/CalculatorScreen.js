@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 import { TextInput, useTheme } from "react-native-paper";
 import LetterAvatar from "../components/Avatar";
-
+import { CURRENCY_API_KEY } from "@env"
 import currencyapi from '@everapi/currencyapi-js'
 import Dropdown from "../components/Dropdown";
 
@@ -30,7 +30,11 @@ export default function CurrencyCalculator({ navigation }) {
         // Haetaan kurssivaluutta jos se ei ole cachessä
         const fetchRate = (rateKey) => {
             if (!Rates[rateKey]) {
-                const client = new currencyapi("Api_Avain");
+                if (!CURRENCY_API_KEY) {
+                    console.error("Currency API key not found. Please add it to your .env file.");
+                    return;
+                }
+                const client = new currencyapi(CURRENCY_API_KEY);
                 client.latest({
                     base_currency: selectedValuuttaFrom,
                     currencies: selectedValuuttaTo

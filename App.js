@@ -3,93 +3,58 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import React, { useState } from 'react';
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import Header from './components/Header'
-import Footer from './components/Footer';
 import useTheme from './hooks/Theme'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+
+import Footer from './components/Footer';
+import Homescreen from './screens/HomeScreen';
+import WeatherScreen from './screens/WeatherScreen';
 import ListScreen from './screens/ListScreen';
 import ItemScreen from './screens/ChosenListScreen';
 import CurrencyCalculator from './screens/CalculatorScreen';
 
-/*
-//--------------Joonan dark ja light mode---------------//
- export default function App() {
+
+const Stack = createStackNavigator();
+
+export default function App() {
 
   const [isDarkTheme, setIsDarkTheme] = useState(false);
 
-  const theme = useTheme(isDarkTheme);
+  const theme = useTheme(isDarkTheme)
 
   const toggleTheme = () => {
     setIsDarkTheme(prevTheme => !prevTheme);
   };
 
   return (
-    <SafeAreaProvider>
+    <NavigationContainer>
       <PaperProvider theme={theme}>
         <SafeAreaView style={styles.safeArea}>
-          <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
 
-            <Header style={styles.header} />
 
-            <View style={[styles.content, { backgroundColor: theme.colors.primary }]}>
-              <Text>Open up App.js to start working on your app!</Text>
-              <TouchableOpacity onPress={toggleTheme}>
-                <Icon name="dark-mode" size={30} color={theme.colors.toggleButtonColor} />
-              </TouchableOpacity>
-            </View>
 
-            <Footer style={styles.footer} />
 
-          </View>
+          <Stack.Navigator initialRouteName='Home' screenOptions={{
+            headerStyle: { height: 70, backgroundColor: theme.colors.primary },
+            headerTitleAlign: 'center',
+            headerTitleStyle: { color: theme.colors.tertiary, flex: 1 },
+            headerTintColor: theme.colors.tertiary,
+          }}>
+            <Stack.Screen style={styles.screen} name="Home">
+              {props => <Homescreen {...props} toggleTheme={toggleTheme} />}
+            </Stack.Screen>
+            <Stack.Screen style={styles.screen} name="Weather" component={WeatherScreen} />
+            <Stack.Screen style={styles.screen} name="Currency" component={CurrencyCalculator} />
+            <Stack.Screen style={styles.screen} name="Lists" component={ListScreen} />
+            <Stack.Screen style={styles.screen} name="Items" component={ItemScreen} />
+          </Stack.Navigator>
+
+
+          <Footer style={styles.footer} />
+
         </SafeAreaView>
       </PaperProvider>
-    </SafeAreaProvider>
-  );
-}
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  header: {
-    height: 50,
-  },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '90%',
-    marginTop: 10,
-    marginBottom: 40,
-  },
-  footer: {
-    height: 50,
-  },
-}); 
-//--------------Joonan dark ja light mode---------------//
-
-*/
-/*-----------Testausta varten-------------- */
-
-const Stack = createStackNavigator();
-
-
-
-export default function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="CurrencyCalculator">
-        <Stack.Screen name="Lists" component={ListScreen} />
-        <Stack.Screen name="Items" component={ItemScreen} />
-        <Stack.Screen name="CurrencyCalculator" component={CurrencyCalculator}/>
-      </Stack.Navigator>
     </NavigationContainer>
   );
 }
@@ -103,9 +68,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  header: {
-    height: 50,
-  },
   content: {
     flex: 1,
     justifyContent: 'center',
@@ -114,8 +76,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 40,
   },
-  footer: {
-    height: 50,
-  },
+  
 });
 /*-----------Testausta varten-------------- */

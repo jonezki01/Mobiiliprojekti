@@ -8,7 +8,7 @@ export default function Weather({ navigation }) {
   const [error, setError] = useState(null)
 
   const city = "oulu"
-  const apiKey = "3ffcfa50d74df320f837715de7ebb63d"
+  const apiKey = "API_KEY_HERE"
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
 
   const theme = useTheme()

@@ -7,7 +7,7 @@ import { TextInput, useTheme } from "react-native-paper";
 import LetterAvatar from "../components/Avatar";
 import { CURRENCY_API_KEY } from "@env"
 import currencyapi from '@everapi/currencyapi-js'
-import Dropdown from "../components/Dropdown";
+import Dropdown from "../components/DropDown";
 
 export default function CurrencyCalculator({ navigation }) {
     const [isDarkTheme, setIsDarkTheme] = useState(false);
@@ -99,7 +99,6 @@ export default function CurrencyCalculator({ navigation }) {
     
     return (
         <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-                <Header style={styles.header} />
 
                 <View style={[styles.content, { backgroundColor: theme.colors.primary }]}>
                     <View style={styles.component}>
@@ -144,22 +143,15 @@ export default function CurrencyCalculator({ navigation }) {
                     </View>
                 </View>
 
-                <Footer navigation={navigation} />
             </View>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: {
-        flex: 1,
-    },
     container: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    header: {
-        height: 50,
     },
     content: {
         flex: 1,
@@ -168,9 +160,6 @@ const styles = StyleSheet.create({
         width: '90%',
         marginTop: 10,
         marginBottom: 40,
-    },
-    footer: {
-        height: 50,
     },
     component: {
         backgroundColor: '#ffffff',

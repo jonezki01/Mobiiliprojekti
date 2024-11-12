@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, ActivityIndicator, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useTheme } from 'react-native-paper'
+import { WEATHER_CURRENCY_KEY } from '@env'
 
 export default function Weather({ navigation }) {
   const [weatherData, setWeatherData] = useState(null)
@@ -8,7 +9,7 @@ export default function Weather({ navigation }) {
   const [error, setError] = useState(null)
 
   const city = "oulu"
-  const apiKey = "API_KEY_HERE"
+  const apiKey = WEATHER_CURRENCY_KEY
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
 
   const theme = useTheme()

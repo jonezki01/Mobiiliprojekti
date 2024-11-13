@@ -1,62 +1,97 @@
 import { StyleSheet, Text, View, ActivityIndicator, Image } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { useTheme } from 'react-native-paper'
+import React, { useState } from 'react'
+import { useTheme, TextInput } from 'react-native-paper'
 import { WEATHER_CURRENCY_KEY } from '@env'
 
-export default function Weather({ navigation }) {
+export default function Weather() {
   const [weatherData, setWeatherData] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [city, setCity] = useState('')
 
-  const city = "oulu"
   const apiKey = WEATHER_CURRENCY_KEY
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
 
   const theme = useTheme()
 
-  useEffect(() => {
-    const fetchWeather = async () => {
-      try {
-        const response = await fetch(url)
-        if (!response.ok) {
-          throw new Error('Verkkovirhe: ' + response.status)
-        }
-        const data = await response.json()
-        setWeatherData(data)
-      } catch (err) {
-        setError(err.message)
-      } finally {
-        setLoading(false)
+  const fetchWeather = async (city) => {
+    setLoading(true)
+    setError(null)
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
+    try {
+      const response = await fetch(url)
+      if (!response.ok) {
+        throw new Error('Network error: ' + response.status)
       }
+      const data = await response.json()
+      setWeatherData(data)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
     }
+  }
 
-    fetchWeather()
-  }, [url])
+  const handleCitySubmit = () => {
+    if (city.trim()) {
+      fetchWeather(city)
+    }
+  }
 
   if (loading) {
     return (
-      <View style={styles.weatherContent}>
+      <View style={[styles.weatherContent, { backgroundColor: theme.colors.primary }]}>
         <ActivityIndicator size="large" color="#0000ff" />
       </View>
     )
   }
 
   if (error) {
-    return (
-      <View style={styles.weatherContent}>
-        <Text>Error: {error}</Text>
-      </View>
-    )
-  }
+    if (error == 'Network error: 404') {
+      return (
+        <View style={[styles.weatherContent, { backgroundColor: theme.colors.primary }]}>
+          <TextInput
+            style={[styles.citySearch, { backgroundColor: theme.colors.surface }]}
+            placeholder="City"
+            value={city}
+            onChangeText={setCity}
+            onSubmitEditing={handleCitySubmit}
+          />
+          <Text style={[{ color: theme.colors.tertiary }]}>City not found</Text>
+        </View>
+      )
+    } else if (error == 'Network error: 401') {
+      return (
+        <View style={[styles.weatherContent, { backgroundColor: theme.colors.primary }]}>
+          <Text style={[{ color: theme.colors.tertiary }]}>Invalid API key</Text>
+        </View>
+      )
+    } else {
+      return (
+        <View style={[styles.weatherContent, { backgroundColor: theme.colors.primary }]}>
+          <Text style={[{ color: theme.colors.tertiary }]}>{error}</Text>
+        </View>
+      )
+    }
 
-  const iconUrl = `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`
+  }
 
   return (
     <View style={[styles.weatherContent, { backgroundColor: theme.colors.primary }]}>
-      <Text style={[{ color: theme.colors.tertiary }]}>{weatherData.name}</Text>
-      <Text style={[{ color: theme.colors.tertiary }]}>{weatherData.main.temp}°C</Text>
-      <Text style={[{ color: theme.colors.tertiary }]}>{weatherData.weather[0].description}</Text>
-      <Image source={{ uri: iconUrl }} style={styles.weatherIcon} />
+      <TextInput
+        style={[styles.citySearch, { backgroundColor: theme.colors.surface }]}
+        placeholder="City"
+        value={city}
+        onChangeText={setCity}
+        onSubmitEditing={handleCitySubmit}
+      />
+      {weatherData && (
+        <>
+          <Text style={[{ color: theme.colors.tertiary }]}>{weatherData.name}</Text>
+          <Text style={[{ color: theme.colors.tertiary }]}>{weatherData.main.temp}°C</Text>
+          <Text style={[{ color: theme.colors.tertiary }]}>{weatherData.weather[0].description}</Text>
+          <Image source={{ uri: `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png` }} style={styles.weatherIcon} />
+        </>
+      )}
     </View>
   )
 }
@@ -80,4 +115,13 @@ const styles = StyleSheet.create({
     height: 100,
     marginTop: 10,
   },
+  citySearch: {
+    width: '60%',
+    height: 30,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 10,
+    padding: 10,
+  }
 })

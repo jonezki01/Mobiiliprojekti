@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { addList, deleteList, firestore } from '../firestore/config';
 import { onSnapshot, collection } from "firebase/firestore";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 /*-----------Testausta varten--------------*/
@@ -9,11 +10,24 @@ import { Ionicons } from '@expo/vector-icons';
 /*-----------Testausta varten--------------*/
 
 export default function ListScreen({ navigation }) {
+  
   const [lists, setLists] = useState([]);
   const [newListName, setNewListName] = useState('');
-  const userId = "testUserId"; //user id:n käyttö tulee Jarnolta
+  const [userId, setUserId] = useState(null)
+
+  
+  useEffect(() => {
+    const fetchUserId = async () => {
+      const id = await AsyncStorage.getItem('userEmail');
+      setUserId(id);
+    };
+    
+    fetchUserId();
+  }, []);
 
   useEffect(() => {
+    if (!userId) return
+
     const listsRef = collection(firestore, 'users', userId, 'lists');
     const unsubscribe = onSnapshot(listsRef, (snapshot) => {
       const fetchedLists = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -21,7 +35,7 @@ export default function ListScreen({ navigation }) {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [userId]);
   
   const createList = async () => {
     if (newListName.trim()) {

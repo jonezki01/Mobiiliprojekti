@@ -12,9 +12,7 @@ export default function Homescreen({ toggleTheme }) {
       
         <View style={[styles.content, { backgroundColor: theme.colors.primary }]}>
         <Text>Open up App.js to start working on your app!</Text>
-        <TouchableOpacity onPress={toggleTheme}>
-          <Icon name="dark-mode" size={30} color={theme.colors.toggleButtonColor} />
-        </TouchableOpacity>
+        
       </View>
       
   );

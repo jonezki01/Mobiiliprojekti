@@ -106,7 +106,7 @@ workflows:
     publishing:
       email:
         recipients:
-          - JARNO_POSTI
+          - $JARNO_POSTI
         notify:
           success: true
           failure: true

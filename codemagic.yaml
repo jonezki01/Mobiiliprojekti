@@ -106,11 +106,11 @@ workflows:
     publishing:
       email:
         recipients:
-          - jarno.tauriainen@gmail.com
+          - JARNO_POSTI
         notify:
           success: true
           failure: true
-      google_play:
-        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
-        track: internal
-        submit_as_draft: true
+#      google_play:
+#        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+#        track: internal
+#        submit_as_draft: true

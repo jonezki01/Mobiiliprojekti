@@ -10,6 +10,7 @@ workflows:
         - firebase
         - apikeys # weather ja currency
         - permissions #keystore ja gcloud service account key
+        - email # build ilmoitusten sähköpostit
       vars:
         PACKAGE_NAME: "com.kouluprojekti.MobiiliProjekti"
 #        EXPO_PUBLIC_API_KEY: $EXPO_PUBLIC_API_KEY

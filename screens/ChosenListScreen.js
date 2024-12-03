@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { addItemToList, deleteItem, firestore } from '../firestore/config';
 import { onSnapshot, collection } from "firebase/firestore";
+import { useTheme, TextInput, Button } from 'react-native-paper'
 
 
-/*-----------Testausta varten--------------*/
-import { View, Text, TextInput, Button, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-/*-----------Testausta varten--------------*/
+
 
 export default function ItemScreen({ route }) {
   const { userId, listId } = route.params;
   const [items, setItems] = useState([]);
   const [newItem, setNewItem] = useState('');
+
+  const theme = useTheme()
+
 
   useEffect(() => {
     const itemsRef = collection(firestore, 'users', userId, 'lists', listId, 'items');
@@ -39,19 +42,21 @@ export default function ItemScreen({ route }) {
   };
 
   return (
-/*     <>
-    </> */
 
-/*-----------Testausta varten--------------*/
-    <View style={styles.container}>
+    <View style={[styles.itemContent, { backgroundColor: theme.colors.primary }]}>
       <Text style={styles.header}>Items in List</Text>
-      <TextInput
-        style={styles.input}
+      <TextInput style={[styles.itemInput, { backgroundColor: theme.colors.surface }]}
         placeholder="Add a new item"
         value={newItem}
         onChangeText={setNewItem}
       />
-      <Button title="Add Item" onPress={addItem} />
+      <Button theme={{ colors: { primary: theme.colors.primary } }}
+        mode='elevated' 
+        textColor='black' 
+        title="Add Item" 
+        onPress={addItem}>
+        add item
+        </Button>
       <FlatList
         data={items}
         keyExtractor={(item) => item.id}
@@ -67,15 +72,41 @@ export default function ItemScreen({ route }) {
     </View>
   );
 }
-/*-----------Testausta varten--------------*/
 
-
-/*-----------Testausta varten--------------*/
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: '#fff' },
-  header: { fontSize: 24, fontWeight: 'bold', marginBottom: 20 },
-  input: { borderColor: '#ddd', borderWidth: 1, padding: 10, marginBottom: 10, borderRadius: 5 },
-  itemContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 15, borderBottomWidth: 1, borderBottomColor: '#eee' },
-  itemText: { fontSize: 18 },
+  itemContent: {
+    flex: 1,
+    justifyContent: 'center',
+    borderRadius: 20,
+    padding: 20,
+    margin: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  itemInput: {
+    width: '100%',
+    height: 30,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 20,
+    marginTop: 10,
+    padding: 10,
+  },
+
+  itemContainer: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
+    padding: 15, 
+    borderBottomWidth: 1, 
+    borderBottomColor: '#eee' 
+  },
+
+  itemText: { 
+    fontSize: 18 
+  },
 });
-/*-----------Testausta varten--------------*/

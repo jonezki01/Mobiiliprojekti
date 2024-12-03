@@ -2,6 +2,9 @@
 
 apikeys.js
 android/
+./vscode/
+eas.json
+
 
 # dependencies
 node_modules/

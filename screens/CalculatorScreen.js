@@ -1,98 +1,99 @@
 
-import { StyleSheet, Text, View } from "react-native";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import { useEffect, useState } from "react";
-import { TextInput, useTheme } from "react-native-paper";
-import LetterAvatar from "../components/Avatar";
-import { CURRENCY_API_KEY } from "@env"
+import { StyleSheet, Text, View } from "react-native"
+import Header from "../components/Header"
+import Footer from "../components/Footer"
+import { useEffect, useState } from "react"
+import { TextInput, useTheme } from "react-native-paper"
+import LetterAvatar from "../components/Avatar"
 import currencyapi from '@everapi/currencyapi-js'
-import Dropdown from "../components/DropDown";
+import Dropdown from "../components/DropDown"
 
 export default function CurrencyCalculator({ navigation }) {
-    const [isDarkTheme, setIsDarkTheme] = useState(false);
-    const theme = useTheme(isDarkTheme);
-    const [Valuutta] = useState(["USD", "GBP", "JPY", "AUD", "CAD", "EUR"]);
-    const [selectedValuuttaFrom, setSelectedValuuttaFrom] = useState("EUR");
-    const [selectedValuuttaTo, setSelectedValuuttaTo] = useState("USD");
+    const CURRENCY_API_KEY = process.env.EXPO_PUBLIC_CURRENCY_API_KEY
 
-    const [fromAmount, setFromAmount] = useState("");
-    const [toAmount, setToAmount] = useState("");
-    const [Rates, setRates] = useState({});
+    const theme = useTheme()
+
+    const [Valuutta] = useState(["USD", "GBP", "JPY", "AUD", "CAD", "EUR"])
+    const [selectedValuuttaFrom, setSelectedValuuttaFrom] = useState("EUR")
+    const [selectedValuuttaTo, setSelectedValuuttaTo] = useState("USD")
+
+    const [fromAmount, setFromAmount] = useState("")
+    const [toAmount, setToAmount] = useState("")
+    const [Rates, setRates] = useState({})
 
     useEffect(() => {
-        if (selectedValuuttaFrom && selectedValuuttaTo) {
-            console.log("Fetching conversion rate for:", selectedValuuttaFrom, "to", selectedValuuttaTo);
-            fetchRate();
+        if (selectedValuuttaFrom && selectedValuuttaTo && CURRENCY_API_KEY) {
+            console.log("Fetching conversion rate for:", selectedValuuttaFrom, "to", selectedValuuttaTo)
+            fetchRate()
         }
-    }, [selectedValuuttaFrom, selectedValuuttaTo]);
+    }, [selectedValuuttaFrom, selectedValuuttaTo])
 
         // Haetaan kurssivaluutta jos se ei ole cachessä
         const fetchRate = (rateKey) => {
             if (!Rates[rateKey]) {
                 if (!CURRENCY_API_KEY) {
-                    console.error("Currency API key not found. Please add it to your .env file.");
-                    return;
+                    console.error("Currency API key not found. Please add it to your .env file.")
+                    return
                 }
-                const client = new currencyapi(CURRENCY_API_KEY);
+                const client = new currencyapi(CURRENCY_API_KEY)
                 client.latest({
                     base_currency: selectedValuuttaFrom,
                     currencies: selectedValuuttaTo
                 })
                 .then((response) => {
-                    const rate = response.data?.[selectedValuuttaTo]?.value;
+                    const rate = response.data?.[selectedValuuttaTo]?.value
                     if (rate) {
                         setRates((prevRate) => ({
                             ...prevRate,
                             [rateKey]: rate
-                        }));
-                        convertFrom(fromAmount, rate); // Muunnetaan uudella kurssivaluutalla
+                        }))
+                        convertFrom(fromAmount, rate) // Muunnetaan uudella kurssivaluutalla
                     }
                 })
-                .catch((error) => console.error("error in conversion rate:", error)); 
+                .catch((error) => console.error("error in conversion rate:", error)) 
             } else {
-                convertFrom(fromAmount, Rates[rateKey]);
-                console.log("Using cached rate for conversion:", Rates[rateKey]);
+                convertFrom(fromAmount, Rates[rateKey])
+                console.log("Using cached rate for conversion:", Rates[rateKey])
             }
-        };
+        }
 
         // Konvertoidaan fromAmountista ToAmounttin 
         const convertFrom = (amount, rate) => {
-            if (isNaN(amount) || !rate) return;
-            const convertedAmount = parseFloat(amount) * rate;
-            setFromAmount(amount);
-            setToAmount(convertedAmount.toFixed(2).toString());
-        };
+            if (isNaN(amount) || !rate) return
+            const convertedAmount = parseFloat(amount) * rate
+            setFromAmount(amount)
+            setToAmount(convertedAmount.toFixed(2).toString())
+        }
 
         // Konvertoidaan ToAmountinsta fromAmountiin
         const convertTo = (amount, rate) => {
-            if (isNaN(amount) || !rate) return;
-            const convertedAmount = parseFloat(amount) / rate;
-            setToAmount(amount);
-            setFromAmount(convertedAmount.toFixed(2).toString());
-        };
+            if (isNaN(amount) || !rate) return
+            const convertedAmount = parseFloat(amount) / rate
+            setToAmount(amount)
+            setFromAmount(convertedAmount.toFixed(2).toString())
+        }
 
         //Handletään muunnokset fromAmountista ja tarkistetaan cache ennen kuin haetaan
         const handleFromAmountChange = (amount) => {
-            setFromAmount(amount);
-            const rateKey = `${selectedValuuttaFrom}_${selectedValuuttaTo}`;
-            const rate = Rates[rateKey];
+            setFromAmount(amount)
+            const rateKey = `${selectedValuuttaFrom}_${selectedValuuttaTo}`
+            const rate = Rates[rateKey]
             if (rate) {
-                convertFrom(amount, rate); // Käytetään cachessa olevaa Ratea
+                convertFrom(amount, rate) // Käytetään cachessa olevaa Ratea
             } else {
-                fetchRate(rateKey);
+                fetchRate(rateKey)
             }
-        };
+        }
 
         // Handletään muunnokset ToAmountista ja tarkistetaan cache ennen kuin haetaan
         const handleToAmountChange = (amount) => {
-            setToAmount(amount);
-            const rateKey = `${selectedValuuttaFrom}_${selectedValuuttaTo}`;
-            const rate = Rates[rateKey];
+            setToAmount(amount)
+            const rateKey = `${selectedValuuttaFrom}_${selectedValuuttaTo}`
+            const rate = Rates[rateKey]
             if (rate) {
-                convertTo(amount, rate);
+                convertTo(amount, rate)
             } else {
-                fetchRate(rateKey);
+                fetchRate(rateKey)
             }
         }
 
@@ -102,6 +103,11 @@ export default function CurrencyCalculator({ navigation }) {
 
                 <View style={[styles.content, { backgroundColor: theme.colors.primary }]}>
                     <View style={styles.component}>
+                        {CURRENCY_API_KEY ? (
+                            <Text style={styles.TopText}>Api key found</Text>
+                        ) : (
+                            <Text style={styles.TopText}>Api key not found</Text>
+                        )}
                         <Text style={styles.TopText}>Amount</Text>
                         <View style={styles.componetRow}>
                             <LetterAvatar content={selectedValuuttaFrom.charAt(0)} />
@@ -144,8 +150,8 @@ export default function CurrencyCalculator({ navigation }) {
                 </View>
 
             </View>
-    );
-};
+    )
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -207,7 +213,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         margin: -20,
     }
-});
+})
 
 /* <Dropdown
           items={Valuutta.map((currency) => ({
@@ -216,8 +222,8 @@ const styles = StyleSheet.create({
           }))}
           selectedValue={selectedValuuttaFrom}
           onValueChange={(value) => {
-            setSelectedValuuttaFrom(value);
-            console.log("Selected 'From' currency:", value);
+            setSelectedValuuttaFrom(value)
+            console.log("Selected 'From' currency:", value)
           }} */
 
 /* <TextInput
@@ -226,7 +232,7 @@ const styles = StyleSheet.create({
           value={fromAmount}
           placeholder="Enter amount"
           onChangeText={(text) => {
-            console.log("Entered amount in 'From' currency:", text);
-            convertFrom(text);
+            console.log("Entered amount in 'From' currency:", text)
+            convertFrom(text)
           }}
         /> */

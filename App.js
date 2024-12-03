@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { Provider as PaperProvider, MD3LightTheme, MD3DarkTheme } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import WeatherScreen from './screens/WeatherScreen'
-import CurrencyCalculator from './screens/CalculatorScreen'
+import CurrencyScreen from './screens/CurrencyScreen'
 import Settings from './screens/SettingsScreen'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'react-native'
@@ -33,7 +33,7 @@ export default function App() {
 
   const theme = isDarkTheme ? MD3DarkTheme : CustomDefaultTheme
   //https://m3.material.io/styles/color/static/baseline
-  
+
   return (
     <SafeAreaProvider>
       <PaperProvider theme={theme}>
@@ -79,7 +79,7 @@ export default function App() {
               })}
             >
               <Tab.Screen name="Weather" component={WeatherScreen} />
-              <Tab.Screen name="Currency" component={CurrencyCalculator} />
+              <Tab.Screen name="Currency" component={CurrencyScreen} />
               <Tab.Screen name="Settings">
                 {(props) => (
                   <Settings

@@ -1,14 +1,12 @@
 
 import { StyleSheet, Text, View } from "react-native"
-import Header from "../components/Header"
-import Footer from "../components/Footer"
 import { useEffect, useState } from "react"
 import { TextInput, useTheme } from "react-native-paper"
 import LetterAvatar from "../components/Avatar"
 import currencyapi from '@everapi/currencyapi-js'
 import Dropdown from "../components/DropDown"
 
-export default function CurrencyCalculator({ navigation }) {
+export default function CurrencyCalculator() {
     const CURRENCY_API_KEY = process.env.EXPO_PUBLIC_CURRENCY_API_KEY
 
     const theme = useTheme()
@@ -103,11 +101,7 @@ export default function CurrencyCalculator({ navigation }) {
 
                 <View style={[styles.content, { backgroundColor: theme.colors.primary }]}>
                     <View style={styles.component}>
-                        {CURRENCY_API_KEY ? (
-                            <Text style={styles.TopText}>Api key found</Text>
-                        ) : (
-                            <Text style={styles.TopText}>Api key not found</Text>
-                        )}
+                        {!CURRENCY_API_KEY ? (<Text style={styles.TopText}>Api key not found</Text>) : null}
                         <Text style={styles.TopText}>Amount</Text>
                         <View style={styles.componetRow}>
                             <LetterAvatar content={selectedValuuttaFrom.charAt(0)} />

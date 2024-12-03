@@ -33,6 +33,7 @@ export default function App() {
 
   const theme = isDarkTheme ? MD3DarkTheme : CustomDefaultTheme
   //https://m3.material.io/styles/color/static/baseline
+  
   return (
     <SafeAreaProvider>
       <PaperProvider theme={theme}>

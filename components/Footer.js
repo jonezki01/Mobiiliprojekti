@@ -40,7 +40,7 @@ export default function Footer() {
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
        <View style={styles.iconContainer}>
          <Icon name="person" size={30} color="#9DB2CE" style={styles.footerIcons} />
          <Text style={styles.iconText}>Asetukset</Text>

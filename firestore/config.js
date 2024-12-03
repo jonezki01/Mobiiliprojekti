@@ -12,6 +12,7 @@ const firebaseConfig = {
   messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
   appId: FIREBASE_APP_ID
 } 
+console.log("Firebase Config:", firebaseConfig);
 
 let app, firestore
 try {

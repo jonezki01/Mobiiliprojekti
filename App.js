@@ -6,16 +6,31 @@ import { Provider as PaperProvider, MD3LightTheme, MD3DarkTheme } from 'react-na
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import WeatherScreen from './screens/WeatherScreen'
 import CurrencyScreen from './screens/CurrencyScreen'
-import Settings from './screens/SettingsScreen'
+import SettingsScreen from './screens/SettingsScreen'
+import ListScreen from './screens/ListScreen'
+import ItemScreen from './screens/ItemScreen'
+import CheckCredentials from './screens/CheckCredentials'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'react-native'
 
 
 const Tab = createBottomTabNavigator()
-const ListStack = createStackNavigator
+
+const ListStack = () => {
+  const Stack = createStackNavigator()
+  return (
+    <Stack.Navigator initialRouteName='Lists'>
+      <Stack.Screen name="Lists" component={ListScreen} />
+      <Stack.Screen name="Items" component={ItemScreen} />
+    </Stack.Navigator>
+  )
+}
+
+
 
 export default function App() {
-  
+
+  const [logged, setLogged] = useState(false)  
   const [isDarkTheme, setIsDarkTheme] = useState(false)
 
   
@@ -41,10 +56,12 @@ export default function App() {
           backgroundColor={theme.colors.secondaryContainer}
         />
         <SafeAreaView style={{ flex: 1 }}>
+        {logged ? (
           <NavigationContainer theme={theme}>
             <Tab.Navigator
               initialRouteName="Weather"
               screenOptions={({ route }) => ({
+                
                 headerStyle: {
                   backgroundColor: theme.colors.secondaryContainer,
                 },
@@ -59,7 +76,6 @@ export default function App() {
                 tabBarInactiveTintColor: theme.colors.onSecondaryContainer,
                 tabBarIcon: ({ color, size }) => {
                   let iconName
-
                   switch (route.name) {
                     case 'Weather':
                       iconName = 'weather-cloudy'
@@ -70,27 +86,31 @@ export default function App() {
                     case 'Settings':
                       iconName = 'cog'
                       break
+                    case 'List':
+                      iconName = 'format-list-bulleted'
+                      break
                     default:
                       iconName = 'question'
                   }
-
                   return <Icon name={iconName} color={color} size={size} />
                 },
               })}
             >
               <Tab.Screen name="Weather" component={WeatherScreen} />
               <Tab.Screen name="Currency" component={CurrencyScreen} />
-              <Tab.Screen name="Settings">
-                {(props) => (
-                  <Settings
+              <Tab.Screen name="Settings">{(props) => (<SettingsScreen
                     {...props}
                     toggleTheme={toggleTheme}
                     isDarkTheme={isDarkTheme}
                   />
                 )}
               </Tab.Screen>
+              <Tab.Screen name="List" options={{ headerShown: false }} component={ListStack} />
             </Tab.Navigator>
           </NavigationContainer>
+        ) : (
+          <CheckCredentials setLogged={setLogged} />
+        )}
         </SafeAreaView>
       </PaperProvider>
     </SafeAreaProvider>

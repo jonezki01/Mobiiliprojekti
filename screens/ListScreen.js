@@ -2,18 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { addList, deleteList, firestore } from '../firestore/config';
 import { onSnapshot, collection } from "firebase/firestore";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTheme, TextInput, Button } from 'react-native-paper'
 
 
-/*-----------Testausta varten--------------*/
-import { View, Text, TextInput, Button, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-/*-----------Testausta varten--------------*/
+
 
 export default function ListScreen({ navigation }) {
   
   const [lists, setLists] = useState([]);
   const [newListName, setNewListName] = useState('');
   const [userId, setUserId] = useState(null)
+
+  const theme = useTheme()
 
   
   useEffect(() => {
@@ -57,20 +59,21 @@ export default function ListScreen({ navigation }) {
   };
 
   return (
-  /*   <>
-    </> */
 
-    //Tässä alla testausta varten raakile. Poistetaan kun todellinen ulkoasu tehdään
-    /*-----------Testausta varten--------------*/
-    <View style={styles.container}>
-      <Text style={styles.header}>My Lists</Text>
-      <TextInput
-        style={styles.input}
+    <View style={[styles.listContent, { backgroundColor: theme.colors.primary }]}>
+      <TextInput style={[styles.listInput, { backgroundColor: theme.colors.surface }]}
         placeholder="New List Name"
         value={newListName}
         onChangeText={setNewListName}
       />
-      <Button title="Create List" onPress={createList} />
+      <Button theme={{ colors: { primary: theme.colors.primary } }} 
+
+        mode='elevated' 
+        textColor='black' 
+        onPress={createList} >
+        create list
+
+      </Button>
       <FlatList
         data={lists}
         keyExtractor={(list) => list.id}
@@ -88,15 +91,43 @@ export default function ListScreen({ navigation }) {
     </View>
   );
 }
-/*-----------Testausta varten--------------*/
 
-//Testausta varten. poistetaan kun todellinen ulkoasu.
-/*-----------Testausta varten--------------*/
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: '#fff' },
-  header: { fontSize: 24, fontWeight: 'bold', marginBottom: 20 },
-  input: { borderColor: '#ddd', borderWidth: 1, padding: 10, marginBottom: 10, borderRadius: 5 },
-  listContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 15, borderBottomWidth: 1, borderBottomColor: '#eee' },
-  listText: { fontSize: 18 },
+  listContent: {
+    flex: 1,
+    justifyContent: 'center',
+    borderRadius: 20,
+    padding: 20,
+    margin: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  listInput: {
+    width: '100%',
+    height: 30,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 20,
+    marginTop: 10,
+    padding: 10,
+  },
+
+  listContainer: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
+    padding: 15, 
+    borderBottomWidth: 1, 
+    borderBottomColor: '#eee' 
+  },
+
+  listText: { 
+    fontSize: 18 
+  },
 });
-/*-----------Testausta varten--------------*/
+
+

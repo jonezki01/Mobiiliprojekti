@@ -104,6 +104,8 @@ export default function App() {
                     isDarkTheme={isDarkTheme}
                   />
                 )}
+                 <Tab.Screen name="Credits" component={CreditsScreen}    />     
+
               </Tab.Screen>
               <Tab.Screen name="List" options={{ headerShown: false }} component={ListStack} />
             </Tab.Navigator>

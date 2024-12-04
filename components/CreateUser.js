@@ -5,7 +5,8 @@ import { auth } from '../firestore/config'
 const createUser = async (setLoadingMessage, retry = 0) => {
     // jos käyttäjän luominen epäonnistuu, yritetään uudelleen max 3 kertaa
     if (retry > 3) {
-        console.error('Too many retries')
+        console.log('Too many retries')
+        setLoadingMessage('Too many retries')
         return false
     }
     
@@ -34,8 +35,11 @@ const createUser = async (setLoadingMessage, retry = 0) => {
         if (error.code === 'auth/email-already-in-use') {
             return createUser(retry + 1)
         }
-        console.error('Error creating user:', error)
-        setLoadingMessage('Error creating user')
+        console.log('Error creating user:', error)
+        setLoadingMessage('Error creating user CreateUSer.js', error.code)
+        if (!auth) {
+            setLoadingMessage('Error creating user: No auth object')
+        }
         return false
     }
 }

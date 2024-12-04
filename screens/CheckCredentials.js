@@ -26,7 +26,7 @@ const CheckCredentials = ({ setLogged }) => {
                         await signInWithEmailAndPassword(auth, email, password)
                         setLogged(true)
                     } else {
-                        setLoadingMessage('Error creating user')
+                        console.log('Error creating user, CheckCredentials.js')
                     }
                 } else {
                     console.log('Signing in')
@@ -34,7 +34,6 @@ const CheckCredentials = ({ setLogged }) => {
                     setLogged(true)
                 }
             } catch (error) {
-
                 console.log('Error during authentication:', error)
                 if (error.code === 'auth/invalid-credential') {
                     await AsyncStorage.removeItem('userEmail')
@@ -53,7 +52,6 @@ const CheckCredentials = ({ setLogged }) => {
                         }
                     } catch (createUserError) {
                         console.error('Error creating user:', createUserError)
-                        setLoadingMessage('Error creating user')
                     }
                 } else {
                     setLoadingMessage('Error signing in', error)

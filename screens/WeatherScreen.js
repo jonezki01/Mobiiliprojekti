@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View, ActivityIndicator, Image } from 'react-native'
 import React, { useState } from 'react'
 import { useTheme, TextInput } from 'react-native-paper'
-import { WEATHER_CURRENCY_KEY } from '@env'
 
 export default function Weather() {
   const [weatherData, setWeatherData] = useState(null)
@@ -9,7 +8,7 @@ export default function Weather() {
   const [error, setError] = useState(null)
   const [city, setCity] = useState('')
 
-  const apiKey = WEATHER_CURRENCY_KEY
+  const apiKey = process.env.EXPO_PUBLIC_WEATHER_API_KEY
 
   const theme = useTheme()
 

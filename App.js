@@ -1,82 +1,118 @@
-import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import { Provider as PaperProvider } from 'react-native-paper'
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
-import React, { useEffect, useState } from 'react'
-import useTheme from './hooks/Theme'
+import React, { useState } from 'react'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import Footer from './components/Footer'
-import Homescreen from './screens/HomeScreen'
+import { Provider as PaperProvider, MD3LightTheme, MD3DarkTheme } from 'react-native-paper'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import WeatherScreen from './screens/WeatherScreen'
+import CurrencyScreen from './screens/CurrencyScreen'
+import SettingsScreen from './screens/SettingsScreen'
 import ListScreen from './screens/ListScreen'
-import ItemScreen from './screens/ChosenListScreen'
-import CurrencyCalculator from './screens/CalculatorScreen'
+import ItemScreen from './screens/ItemScreen'
 import CheckCredentials from './screens/CheckCredentials'
-import { navigatorStyles, appStyles as styles } from './styles/Styles'
-import Settings from './screens/SettingsScreen'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
+import { StatusBar } from 'react-native'
 
 
-const Stack = createStackNavigator()
+const Tab = createBottomTabNavigator()
 
-export default function App() {
-
-  const [isDarkTheme, setIsDarkTheme] = useState(false)
-  const [logged, setLogged] = useState(false)
-
-    // Ladataan teema storagesta kun appi käynnistetään
-    useEffect(() => {
-      const loadThemePreference = async () => {
-        try {
-          const savedTheme = await AsyncStorage.getItem('darkMode');
-          if (savedTheme !== null) {
-            setIsDarkTheme(JSON.parse(savedTheme));
-          }
-        } catch (error) {
-          console.error('Failed to load theme preference', error);
-        }
-      };
-      loadThemePreference();
-    }, []);
-  
-    // Tallennetaan theme AsyncStorageen
-    const toggleTheme = async () => {
-      const newTheme = !isDarkTheme;
-      setIsDarkTheme(newTheme);
-      try {
-        await AsyncStorage.setItem('darkMode', JSON.stringify(newTheme));
-      } catch (error) {
-        console.error('Failed to save theme preference', error);
-      }
-    };
-
-  const theme = useTheme(isDarkTheme)
-
+const ListStack = () => {
+  const Stack = createStackNavigator()
   return (
-    <NavigationContainer>
-      <PaperProvider theme={theme}>
-        <SafeAreaView style={styles.safeArea}>
-          {logged ? (
-          <Stack.Navigator initialRouteName='Lists' screenOptions={navigatorStyles(theme)}>
-            <Stack.Screen style={styles.screen} name="Lists" component={ListScreen} />
-            <Stack.Screen style={styles.screen} name="Items" component={ItemScreen} />
-            <Stack.Screen style={styles.screen} name="Home">
-              {props => <Homescreen {...props} toggleTheme={toggleTheme} />}
-            </Stack.Screen>
-            <Stack.Screen name="Settings">
-              {props => <Settings {...props} toggleTheme={toggleTheme} />}
-            </Stack.Screen>
-            <Stack.Screen style={styles.screen} name="Weather" component={WeatherScreen} />
-            <Stack.Screen style={styles.screen} name="Currency" component={CurrencyCalculator} />           
-          </Stack.Navigator>
-          ) : (
-            <CheckCredentials setLogged={setLogged} />
-          )}
-          <Footer style={styles.footer} />
-        </SafeAreaView>
-      </PaperProvider>
-    </NavigationContainer>
+    <Stack.Navigator initialRouteName='Lists'>
+      <Stack.Screen name="Lists" component={ListScreen} />
+      <Stack.Screen name="Items" component={ItemScreen} />
+    </Stack.Navigator>
   )
 }
 
+
+
+export default function App() {
+
+  const [logged, setLogged] = useState(false)  
+  const [isDarkTheme, setIsDarkTheme] = useState(false)
+
+  
+  const toggleTheme = () => setIsDarkTheme((prev) => !prev)
+
+  
+  const CustomDefaultTheme = {
+    ...MD3LightTheme,
+    colors: {
+      ...MD3LightTheme.colors,
+      headerBackground: '#d3d3d3', // Uusi väri headerille jos halutaan
+      secondaryContainer: '#f3f3f3'
+    },
+  }
+
+  const theme = isDarkTheme ? MD3DarkTheme : CustomDefaultTheme
+  //https://m3.material.io/styles/color/static/baseline
+
+  return (
+    <SafeAreaProvider>
+      <PaperProvider theme={theme}>
+        <StatusBar barStyle={isDarkTheme ? 'light-content' : 'dark-content'}
+          backgroundColor={theme.colors.secondaryContainer}
+        />
+        <SafeAreaView style={{ flex: 1 }}>
+        {logged ? (
+          <NavigationContainer theme={theme}>
+            <Tab.Navigator
+              initialRouteName="Weather"
+              screenOptions={({ route }) => ({
+                
+                headerStyle: {
+                  backgroundColor: theme.colors.secondaryContainer,
+                },
+                headerTintColor: theme.colors.onSurface,
+                headerTitleStyle: {
+                  fontWeight: 'bold',
+                },
+                tabBarStyle: {
+                  backgroundColor: theme.colors.secondaryContainer, 
+                },
+                tabBarActiveTintColor: theme.colors.tertiary,
+                tabBarInactiveTintColor: theme.colors.onSecondaryContainer,
+                tabBarIcon: ({ color, size }) => {
+                  let iconName
+                  switch (route.name) {
+                    case 'Weather':
+                      iconName = 'weather-cloudy'
+                      break
+                    case 'Currency':
+                      iconName = 'currency-eur'
+                      break
+                    case 'Settings':
+                      iconName = 'cog'
+                      break
+                    case 'List':
+                      iconName = 'format-list-bulleted'
+                      break
+                    default:
+                      iconName = 'question'
+                  }
+                  return <Icon name={iconName} color={color} size={size} />
+                },
+              })}
+            >
+              <Tab.Screen name="Weather" component={WeatherScreen} />
+              <Tab.Screen name="Currency" component={CurrencyScreen} />
+              <Tab.Screen name="Settings">{(props) => (<SettingsScreen
+                    {...props}
+                    toggleTheme={toggleTheme}
+                    isDarkTheme={isDarkTheme}
+                  />
+                )}
+              </Tab.Screen>
+              <Tab.Screen name="List" options={{ headerShown: false }} component={ListStack} />
+            </Tab.Navigator>
+          </NavigationContainer>
+        ) : (
+          <CheckCredentials setLogged={setLogged} />
+        )}
+        </SafeAreaView>
+      </PaperProvider>
+    </SafeAreaProvider>
+  )
+}

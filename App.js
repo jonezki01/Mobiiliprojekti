@@ -14,6 +14,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'react-native'
 
 
+
 const Tab = createBottomTabNavigator()
 
 const ListStack = () => {
@@ -104,7 +105,7 @@ export default function App() {
                     isDarkTheme={isDarkTheme}
                   />
                 )}
-                 <Tab.Screen name="Credits" component={CreditsScreen}    />     
+                 <Tab.Screen name="Credits" component={Credits}    />     
 
               </Tab.Screen>
               <Tab.Screen name="List" options={{ headerShown: false }} component={ListStack} />

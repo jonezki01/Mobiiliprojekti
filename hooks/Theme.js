@@ -1,21 +1,23 @@
-import { Colors } from './Colors'
+import {MD3LightTheme, MD3DarkTheme } from 'react-native-paper'
 
-
-const useTheme = (isDarkTheme) => {
-  
-    const theme = isDarkTheme
-      ? {
-          colors: {
-            ...Colors.dark,
-          },
-        }
-      : {
-          colors: {
-            ...Colors.light,
-          },
-        };
-  
-    return theme;
-  };
-  
-  export default useTheme;
+    const CustomLightTheme = {
+      ...MD3LightTheme,
+      colors: {
+        ...MD3LightTheme.colors,
+        headerBackground: '#d3d3d3',
+        secondaryContainer: '#f3f3f3',
+      },
+    }
+    
+    const CustomDarkTheme = {
+      ...MD3DarkTheme,
+      colors: {
+        ...MD3DarkTheme.colors,
+        headerBackground: '#1e1e1e',
+        secondaryContainer: '#121212',
+      },
+    }
+    
+    export default function useTheme(isDarkTheme) {
+      return isDarkTheme ? CustomDarkTheme : CustomLightTheme
+    }

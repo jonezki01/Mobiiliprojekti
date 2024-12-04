@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { Provider as PaperProvider, MD3LightTheme, MD3DarkTheme } from 'react-native-paper'
+import useTheme from './hooks/Theme'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import WeatherScreen from './screens/WeatherScreen'
 import CurrencyScreen from './screens/CurrencyScreen'
@@ -18,20 +19,10 @@ export default function App() {
   
   const [isDarkTheme, setIsDarkTheme] = useState(false)
 
-  
+  const theme = useTheme(isDarkTheme)
+
   const toggleTheme = () => setIsDarkTheme((prev) => !prev)
 
-  
-  const CustomDefaultTheme = {
-    ...MD3LightTheme,
-    colors: {
-      ...MD3LightTheme.colors,
-      headerBackground: '#d3d3d3', // Uusi väri headerille jos halutaan
-      secondaryContainer: '#f3f3f3'
-    },
-  }
-
-  const theme = isDarkTheme ? MD3DarkTheme : CustomDefaultTheme
   //https://m3.material.io/styles/color/static/baseline
 
   return (

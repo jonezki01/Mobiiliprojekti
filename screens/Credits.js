@@ -8,7 +8,7 @@
    return (
      <View style={styles.container}>
        <Image 
-         source={require('../assets/modern_minimalist_logo.webp')} 
+         source="./assets/modern_minimalist_logo.webp"
          style={styles.picture}
        />
        <Text style={styles.credits}>Credits:</Text>

@@ -1,15 +1,15 @@
 import { initializeApp } from "firebase/app"
-import { getFirestore, collection, addDoc, deleteDoc, doc, serverTimestamp, writeBatch, getDocs } from "firebase/firestore"
+import { getFirestore, collection, addDoc, deleteDoc, doc, writeBatch, getDocs } from "firebase/firestore"
 import { initializeAuth, getReactNativePersistence, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth"
 
 
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID
+  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID
 } 
 console.log("Firebase Config:", firebaseConfig);
 
@@ -18,22 +18,27 @@ try {
   app = initializeApp(firebaseConfig)
   firestore = getFirestore(app)
 } catch (error) {
-  console.error("Firebase initialization error:", error)
+  console.log("Firebase initialization error:", error)
   if (error.code === 'app/invalid-configuration') {
-    console.error("Invalid Firebase configuration. Check your API key and project settings.")
+    console.log("Invalid Firebase configuration. Check your API key and project settings.")
   } else {
-    console.error("An unknown error occurred during Firebase initialization.")
+    console.log("An unknown error occurred during Firebase initialization.")
   }
 }
 
-const auth = initializeAuth(app, { persistence: getReactNativePersistence() })
+let auth
+try {
+  auth = initializeAuth(app, { persistence: getReactNativePersistence() })
+} catch (error) {
+  console.log("Firebase Auth initialization error:", error)
+}
 
 const addList = async (userId, listData) => {
   try {
     const listsRef = collection(firestore, 'users', userId, 'lists')
     await addDoc(listsRef, listData)
   } catch (error) {
-    console.error("Error adding list: ", error)
+    console.log("Error adding list: ", error)
   }
 }
 
@@ -42,7 +47,7 @@ const addItemToList = async (userId, listId, itemData) => {
     const itemsRef = collection(firestore, 'users', userId, 'lists', listId, 'items')
     await addDoc(itemsRef, itemData)
   } catch (error) {
-    console.error("Error adding item: ", error)
+    console.log("Error adding item: ", error)
   }
 }
 
@@ -68,7 +73,7 @@ const deleteItem = async (userId, listId, itemId) => {
     const itemRef = doc(firestore, 'users', userId, 'lists', listId, 'items', itemId)
     await deleteDoc(itemRef)
   } catch (error) {
-    console.error("Error deleting item: ", error)
+    console.log("Error deleting item: ", error)
   }
 }
 
@@ -89,7 +94,7 @@ export const deleteList = async (userId, listId) => {
 
     console.log("List and all its items deleted successfully")
   } catch (error) {
-    console.error("Error deleting list and its items: ", error)
+    console.log("Error deleting list and its items: ", error)
   }
 }
 

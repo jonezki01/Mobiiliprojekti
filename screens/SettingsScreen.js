@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'react-native-paper';
 
-export default function Settings({ navigation, toggleTheme, isDarkTheme }) {
+export default function SettingsScreen({ navigation, toggleTheme, isDarkTheme }) {
   const theme = useTheme();
   
 

@@ -13,6 +13,8 @@ import ItemScreen from './screens/ItemScreen'
 import CheckCredentials from './screens/CheckCredentials'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'react-native'
+import Credits
+ from './screens/Credits'
 
 
 
@@ -98,6 +100,7 @@ export default function App() {
             >
               <Tab.Screen name="List" options={{ headerShown: false }} component={ListStack} />
               <Tab.Screen name="Currency" component={CurrencyScreen} />
+              <Tab.Screen name="Credits" component={Credits}    />   
               <Tab.Screen name="Weather" component={WeatherScreen} />
               <Tab.Screen name="Settings">{(props) => (<SettingsScreen
                     {...props}
@@ -105,6 +108,8 @@ export default function App() {
                     isDarkTheme={isDarkTheme}
                   />
                 )}
+                   
+
               </Tab.Screen>
             </Tab.Navigator>
           </NavigationContainer>

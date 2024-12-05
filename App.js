@@ -87,8 +87,9 @@ export default function App() {
                 },
               })}
             >
-              <Tab.Screen name="Weather" component={WeatherScreen} />
+              <Tab.Screen name="List" options={{ headerShown: false }} component={ListStack} />
               <Tab.Screen name="Currency" component={CurrencyScreen} />
+              <Tab.Screen name="Weather" component={WeatherScreen} />
               <Tab.Screen name="Settings">{(props) => (<SettingsScreen
                     {...props}
                     toggleTheme={toggleTheme}
@@ -96,7 +97,6 @@ export default function App() {
                   />
                 )}
               </Tab.Screen>
-              <Tab.Screen name="List" options={{ headerShown: false }} component={ListStack} />
             </Tab.Navigator>
           </NavigationContainer>
         ) : (

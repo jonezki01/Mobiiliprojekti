@@ -10,7 +10,7 @@ export default function SettingsScreen({ navigation, toggleTheme, isDarkTheme })
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.secondaryContainer }]}>
       <View style={styles.toggleContainer}>
-        <Text style={[styles.toggleText, { color: theme.colors.tertiary }]}>Dark Mode</Text>
+        <Text style={[styles.toggleText, { color: theme.colors.tertiary }]}>{isDarkTheme? "Dark Mode" : "Light Mode"}</Text>
         <TouchableOpacity onPress={toggleTheme}>
           <Icon
             name={isDarkTheme? "light-mode" : "dark-mode"}

@@ -5,7 +5,7 @@ import {MD3LightTheme, MD3DarkTheme } from 'react-native-paper'
       colors: {
         ...MD3LightTheme.colors,
         headerBackground: '#d3d3d3',
-        secondaryContainer: '#f3f3f3',
+        secondaryContainer: '#e3c8e6',
       },
     }
     

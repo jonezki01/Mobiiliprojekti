@@ -47,6 +47,13 @@ export default function Footer() {
        </View>
       </TouchableOpacity>
 
+      <TouchableOpacity onPress={() => navigation.navigate("Credits")}>
+        <View style={styles.iconContainer}>
+          <Icon name="menu" size={30} color="#9DB2CE" style={styles.footerIcons} />
+          <Text style={styles.iconText}>Credits</Text>
+        </View>
+      </TouchableOpacity>
+
     </View>
   )
 }

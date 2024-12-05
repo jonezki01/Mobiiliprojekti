@@ -15,19 +15,8 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'react-native'
 
 
+
 const Tab = createBottomTabNavigator()
-
-const ListStack = () => {
-  const Stack = createStackNavigator()
-  return (
-    <Stack.Navigator initialRouteName='Lists'>
-      <Stack.Screen name="Lists" component={ListScreen} />
-      <Stack.Screen name="Items" component={ItemScreen} />
-    </Stack.Navigator>
-  )
-}
-
-
 
 export default function App() {
 
@@ -39,6 +28,26 @@ export default function App() {
   const toggleTheme = () => setIsDarkTheme((prev) => !prev)
 
   //https://m3.material.io/styles/color/static/baseline
+
+  const ListStack = () => {
+    const Stack = createStackNavigator()
+    return (
+      <Stack.Navigator initialRouteName='Lists' screenOptions={({ route }) => ({
+                  
+        headerStyle: {
+          backgroundColor: theme.colors.secondaryContainer,
+        },
+        headerTintColor: theme.colors.onSurface,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      })}
+        >
+        <Stack.Screen name="Lists" component={ListScreen} />
+        <Stack.Screen name="Items" component={ItemScreen} />
+      </Stack.Navigator>
+    )
+  }
 
   return (
     <SafeAreaProvider>

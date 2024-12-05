@@ -1,21 +1,42 @@
 import { StyleSheet, Text, View, ActivityIndicator, Image } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useTheme, TextInput } from 'react-native-paper'
+import * as Location from 'expo-location'
 
 export default function Weather() {
   const [weatherData, setWeatherData] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [city, setCity] = useState('')
+  const [location, setLocation] = useState(null)
 
-  const apiKey = process.env.EXPO_PUBLIC_WEATHER_API_KEY
+  const apikey = process.env.EXPO_PUBLIC_WEATHER_API_KEY
 
   const theme = useTheme()
+
+  const fetchWeatherByCoords = async (latitude, longitude) => {
+    setLoading(true)
+    setError(null)
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apikey}&units=metric`
+    try {
+      const response = await fetch(url)
+      if (!response.ok) {
+        throw new Error('Network error: ' + response.status)
+      }
+      const data = await response.json()
+      setWeatherData(data)
+      console.log(data)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const fetchWeather = async (city) => {
     setLoading(true)
     setError(null)
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apikey}&units=metric`
     try {
       const response = await fetch(url)
       if (!response.ok) {
@@ -35,6 +56,24 @@ export default function Weather() {
       fetchWeather(city)
     }
   }
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync()
+      if (status !== 'granted') {
+        setError('Permission to access location was denied')
+        return
+      }
+
+      try {
+        const currentLocation = await Location.getCurrentPositionAsync({})
+        setLocation(currentLocation)
+        fetchWeatherByCoords(currentLocation.coords.latitude, currentLocation.coords.longitude)
+      } catch (error) {
+        setError('Unable to fetch location')
+      }
+    })()
+  }, [])
 
   if (loading) {
     return (
@@ -66,7 +105,7 @@ export default function Weather() {
       )
     } else {
       return (
-        <View style={[styles.weatherContent, { backgroundColor: theme.colors.primary }]}>
+        <View style={[styles.weatherContent, { backgroundColor: theme.colors.secondaryContainer }]}>
           <Text style={[{ color: theme.colors.tertiary }]}>{error}</Text>
         </View>
       )

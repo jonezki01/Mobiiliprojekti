@@ -43,7 +43,7 @@ export default function ItemScreen({ route }) {
 
   return (
 
-    <View style={[styles.itemContent, { backgroundColor: theme.colors.primary }]}>
+    <View style={[styles.itemContent, { backgroundColor: theme.colors.secondaryContainer }]}>
       <Text style={styles.header}>Items in List</Text>
       <TextInput style={[styles.itemInput, { backgroundColor: theme.colors.surface }]}
         placeholder="Add a new item"

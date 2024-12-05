@@ -5,15 +5,15 @@ import { useTheme } from 'react-native-paper';
 
 export default function SettingsScreen({ navigation, toggleTheme, isDarkTheme }) {
   const theme = useTheme();
-
+  
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+    <View style={[styles.container, { backgroundColor: theme.colors.secondaryContainer }]}>
       <View style={styles.toggleContainer}>
-        <Text style={[styles.toggleText, { color: theme.colors.text }]}>Dark Mode</Text>
+        <Text style={[styles.toggleText, { color: theme.colors.tertiary }]}>{isDarkTheme? "Dark Mode" : "Light Mode"}</Text>
         <TouchableOpacity onPress={toggleTheme}>
           <Icon
-            name={"dark-mode"}
+            name={isDarkTheme? "light-mode" : "dark-mode"}
             size={30}
             color={isDarkTheme ? "white" : theme.colors.toggleButtonColor}
           />
@@ -46,7 +46,14 @@ function SettingItem({ icon, label, onPress }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    borderRadius: 20,
+    padding: 20,
+    margin: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
   },
   toggleContainer: {
     flexDirection: 'row',

@@ -38,7 +38,7 @@ export default function Weather() {
 
   if (loading) {
     return (
-      <View style={[styles.weatherContent, { backgroundColor: theme.colors.primary }]}>
+      <View style={[styles.weatherContent, { backgroundColor: theme.colors.secondaryContainer }]}>
         <ActivityIndicator size="large" color="#0000ff" />
       </View>
     )
@@ -47,7 +47,7 @@ export default function Weather() {
   if (error) {
     if (error == 'Network error: 404') {
       return (
-        <View style={[styles.weatherContent, { backgroundColor: theme.colors.primary }]}>
+        <View style={[styles.weatherContent, { backgroundColor: theme.colors.secondaryContainer }]}>
           <TextInput
             style={[styles.citySearch, { backgroundColor: theme.colors.surface }]}
             placeholder="City"
@@ -60,7 +60,7 @@ export default function Weather() {
       )
     } else if (error == 'Network error: 401') {
       return (
-        <View style={[styles.weatherContent, { backgroundColor: theme.colors.primary }]}>
+        <View style={[styles.weatherContent, { backgroundColor: theme.colors.secondaryContainer }]}>
           <Text style={[{ color: theme.colors.tertiary }]}>Invalid API key</Text>
         </View>
       )
@@ -75,7 +75,7 @@ export default function Weather() {
   }
 
   return (
-    <View style={[styles.weatherContent, { backgroundColor: theme.colors.primary }]}>
+    <View style={[styles.weatherContent, { backgroundColor: theme.colors.secondaryContainer }]}>
       <TextInput
         style={[styles.citySearch, { backgroundColor: theme.colors.surface }]}
         placeholder="City"
@@ -85,7 +85,7 @@ export default function Weather() {
       />
       {weatherData && (
         <>
-          <Text style={[{ color: theme.colors.tertiary }]}>{weatherData.name}</Text>
+          <Text style={[{ color: theme.colors.tertiary }]}>{weatherData.name}, {weatherData.sys.country}</Text>
           <Text style={[{ color: theme.colors.tertiary }]}>{weatherData.main.temp}°C</Text>
           <Text style={[{ color: theme.colors.tertiary }]}>{weatherData.weather[0].description}</Text>
           <Image source={{ uri: `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png` }} style={styles.weatherIcon} />

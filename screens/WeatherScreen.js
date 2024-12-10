@@ -14,6 +14,7 @@ export default function Weather() {
 
   const theme = useTheme()
 
+  // Fetch weather by coordinates
   const fetchWeatherByCoords = async (latitude, longitude) => {
     setLoading(true)
     setError(null)
@@ -32,6 +33,7 @@ export default function Weather() {
     }
   }
 
+  // Fetch weather by city name
   const fetchWeather = async (city) => {
     setLoading(true)
     setError(null)
@@ -50,12 +52,14 @@ export default function Weather() {
     }
   }
 
+  // Handle city submit
   const handleCitySubmit = () => {
     if (city.trim()) {
       fetchWeather(city)
     }
   }
 
+  // Fetch weather by location
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync()
@@ -82,18 +86,23 @@ export default function Weather() {
     )
   }
 
+  // Handle errors
   if (error) {
     if (error == 'Network error: 404') {
       return (
         <View style={[styles.weatherContent, { backgroundColor: theme.colors.secondaryContainer }]}>
-          <TextInput
-            style={[styles.citySearch, { backgroundColor: theme.colors.surface }]}
-            placeholder="City"
-            value={city}
-            onChangeText={setCity}
-            onSubmitEditing={handleCitySubmit}
-          />
-          <Text style={[{ color: theme.colors.tertiary }]}>City not found</Text>
+          <View style={styles.topContainer}>
+            <TextInput
+              style={[styles.citySearch, { backgroundColor: theme.colors.surface }]}
+              placeholder="City"
+              value={city}
+              onChangeText={setCity}
+              onSubmitEditing={handleCitySubmit}
+            />
+          </View>
+          <View style={styles.middleContainer}>
+            <Text style={[{ color: theme.colors.tertiary }]}>City not found</Text>
+          </View>
         </View>
       )
     } else if (error == 'Network error: 401') {
@@ -114,21 +123,25 @@ export default function Weather() {
 
   return (
     <View style={[styles.weatherContent, { backgroundColor: theme.colors.secondaryContainer }]}>
-      <TextInput
-        style={[styles.citySearch, { backgroundColor: theme.colors.surface }]}
-        placeholder="City"
-        value={city}
-        onChangeText={setCity}
-        onSubmitEditing={handleCitySubmit}
-      />
-      {weatherData && (
-        <>
-          <Text style={[{ color: theme.colors.tertiary }]}>{weatherData.name}, {weatherData.sys.country}</Text>
-          <Text style={[{ color: theme.colors.tertiary }]}>{weatherData.main.temp}°C</Text>
-          <Text style={[{ color: theme.colors.tertiary }]}>{weatherData.weather[0].description}</Text>
-          <Image source={{ uri: `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png` }} style={styles.weatherIcon} />
-        </>
-      )}
+      <View style={styles.topContainer}>
+        <TextInput
+          style={[styles.citySearch, { backgroundColor: theme.colors.surface }]}
+          placeholder="City"
+          value={city}
+          onChangeText={setCity}
+          onSubmitEditing={handleCitySubmit}
+        />
+      </View>
+      <View style={styles.middleContainer}>
+        {weatherData && (
+          <>
+            <Text style={[{ color: theme.colors.tertiary }]}>{weatherData.name}, {weatherData.sys.country}</Text>
+            <Text style={[{ color: theme.colors.tertiary }]}>{weatherData.main.temp}°C</Text>
+            <Text style={[{ color: theme.colors.tertiary }]}>{weatherData.weather[0].description}</Text>
+            <Image source={{ uri: `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png` }} style={styles.weatherIcon} />
+          </>
+        )}
+      </View>
     </View>
   )
 }
@@ -147,6 +160,15 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 5,
   },
+  topContainer: {
+    width: '100%',
+    alignItems: 'center',
+  },
+  middleContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   weatherIcon: {
     width: 100,
     height: 100,
@@ -158,7 +180,6 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 5,
-    marginBottom: 10,
     padding: 10,
   }
 })

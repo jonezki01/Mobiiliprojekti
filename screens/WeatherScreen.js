@@ -10,14 +10,14 @@ export default function Weather() {
   const [city, setCity] = useState('')
   const [location, setLocation] = useState(null)
 
-  const apikey = process.env.EXPO_PUBLIC_WEATHER_API_KEY
+  const apiKey = process.env.EXPO_PUBLIC_WEATHER_API_KEY
 
   const theme = useTheme()
 
   const fetchWeatherByCoords = async (latitude, longitude) => {
     setLoading(true)
     setError(null)
-    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apikey}&units=metric`
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`
     try {
       const response = await fetch(url)
       if (!response.ok) {
@@ -25,7 +25,6 @@ export default function Weather() {
       }
       const data = await response.json()
       setWeatherData(data)
-      console.log(data)
     } catch (err) {
       setError(err.message)
     } finally {
@@ -36,7 +35,7 @@ export default function Weather() {
   const fetchWeather = async (city) => {
     setLoading(true)
     setError(null)
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apikey}&units=metric`
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
     try {
       const response = await fetch(url)
       if (!response.ok) {

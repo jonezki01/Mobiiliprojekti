@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { Provider as PaperProvider, MD3LightTheme, MD3DarkTheme } from 'react-native-paper'
+import useTheme from './hooks/Theme'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import WeatherScreen from './screens/WeatherScreen'
 import CurrencyScreen from './screens/CurrencyScreen'
@@ -12,42 +13,64 @@ import ItemScreen from './screens/ItemScreen'
 import CheckCredentials from './screens/CheckCredentials'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'react-native'
+import Credits
+ from './screens/Credits'
+
 
 
 const Tab = createBottomTabNavigator()
-
-const ListStack = () => {
-  const Stack = createStackNavigator()
-  return (
-    <Stack.Navigator initialRouteName='Lists'>
-      <Stack.Screen name="Lists" component={ListScreen} />
-      <Stack.Screen name="Items" component={ItemScreen} />
-    </Stack.Navigator>
-  )
-}
-
-
 
 export default function App() {
 
   const [logged, setLogged] = useState(false)  
   const [isDarkTheme, setIsDarkTheme] = useState(false)
 
-  
+  const theme = useTheme(isDarkTheme)
+
   const toggleTheme = () => setIsDarkTheme((prev) => !prev)
 
-  
-  const CustomDefaultTheme = {
-    ...MD3LightTheme,
-    colors: {
-      ...MD3LightTheme.colors,
-      headerBackground: '#d3d3d3', // Uusi väri headerille jos halutaan
-      secondaryContainer: '#f3f3f3'
-    },
+  //https://m3.material.io/styles/color/static/baseline
+
+  const ListStack = () => {
+    const Stack = createStackNavigator()
+    return (
+      <Stack.Navigator initialRouteName='Lists' screenOptions={({ route }) => ({
+                  
+        headerStyle: {
+          backgroundColor: theme.colors.secondaryContainer,
+        },
+        headerTintColor: theme.colors.onSurface,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      })}
+        >
+        <Stack.Screen name="Lists" component={ListScreen} />
+        <Stack.Screen name="Items" component={ItemScreen} />
+      </Stack.Navigator>
+    )
   }
 
-  const theme = isDarkTheme ? MD3DarkTheme : CustomDefaultTheme
-  //https://m3.material.io/styles/color/static/baseline
+  const SettingsStack = ({ toggleTheme, isDarkTheme }) =>{
+    const Stack = createStackNavigator();
+    return(
+      <Stack.Navigator>
+      <Stack.Screen name="Settings"
+      options={{ headerShown: false }}
+      >
+        {(props) => (
+          <SettingsScreen
+            {...props}
+            toggleTheme={toggleTheme}
+            isDarkTheme={isDarkTheme}
+          />
+        )}
+      </Stack.Screen>
+
+      <Stack.Screen name="Credits" component={Credits}/>
+    </Stack.Navigator>
+    );
+  }
 
   return (
     <SafeAreaProvider>
@@ -96,16 +119,18 @@ export default function App() {
                 },
               })}
             >
-              <Tab.Screen name="Weather" component={WeatherScreen} />
-              <Tab.Screen name="Currency" component={CurrencyScreen} />
-              <Tab.Screen name="Settings">{(props) => (<SettingsScreen
-                    {...props}
-                    toggleTheme={toggleTheme}
-                    isDarkTheme={isDarkTheme}
-                  />
-                )}
-              </Tab.Screen>
               <Tab.Screen name="List" options={{ headerShown: false }} component={ListStack} />
+              <Tab.Screen name="Currency" component={CurrencyScreen} />
+              <Tab.Screen name="Weather" component={WeatherScreen} />
+              <Tab.Screen name="Settings">
+              {(props) => (
+                <SettingsStack
+                  {...props}
+                  toggleTheme={toggleTheme}
+                  isDarkTheme={isDarkTheme}
+                />
+              )}
+            </Tab.Screen>
             </Tab.Navigator>
           </NavigationContainer>
         ) : (

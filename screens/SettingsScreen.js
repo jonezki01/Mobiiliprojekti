@@ -5,15 +5,15 @@ import { useTheme } from 'react-native-paper';
 
 export default function SettingsScreen({ navigation, toggleTheme, isDarkTheme }) {
   const theme = useTheme();
-
+  
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+    <View style={[styles.container, { backgroundColor: theme.colors.secondaryContainer }]}>
       <View style={styles.toggleContainer}>
-        <Text style={[styles.toggleText, { color: theme.colors.text }]}>Dark Mode</Text>
+        <Text style={[styles.toggleText, { color: theme.colors.tertiary }]}>{isDarkTheme? "Dark Mode" : "Light Mode"}</Text>
         <TouchableOpacity onPress={toggleTheme}>
           <Icon
-            name={"dark-mode"}
+            name={isDarkTheme? "light-mode" : "dark-mode"}
             size={30}
             color={isDarkTheme ? "white" : theme.colors.toggleButtonColor}
           />
@@ -27,6 +27,13 @@ export default function SettingsScreen({ navigation, toggleTheme, isDarkTheme })
           onPress={() => navigation.navigate('Notifications')}
         />
       </View>
+      <View style={styles.settingsContainer}>
+          <CreditsItem 
+          icon="menu"
+          label="Credits"
+          navigation={navigation}
+          />
+        </View>
     </View>
   );
 }
@@ -43,10 +50,29 @@ function SettingItem({ icon, label, onPress }) {
   );
 }
 
+function CreditsItem({ icon, label, navigation }) {
+  return (
+    <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('Credits')}>
+      <View style={styles.settingLabel}>
+        <Icon name={icon} size={24} color="#000" />
+        <Text style={styles.settingText}>{label}</Text>
+      </View>
+      <Icon name="chevron-right" size={24} color="#000" />
+    </TouchableOpacity>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    borderRadius: 20,
+    padding: 20,
+    margin: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
   },
   toggleContainer: {
     flexDirection: 'row',
@@ -67,6 +93,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#e9e7f6',
     borderRadius: 8,
     paddingVertical: 8,
+    marginTop:4,
   },
   settingItem: {
     flexDirection: 'row',
@@ -74,8 +101,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
   },
   settingLabel: {
     flexDirection: 'row',

@@ -74,7 +74,7 @@ export default function ListScreen({ navigation }) {
 
   return (
 
-    <View style={[styles.listContent, { backgroundColor: theme.colors.primary }]}>
+    <View style={[styles.listContent, { backgroundColor: theme.colors.secondaryContainer }]}>
       {userId ? (
         <>
           <Portal>

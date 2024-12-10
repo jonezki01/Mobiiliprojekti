@@ -26,18 +26,18 @@ export default function CurrencyCalculator() {
         }
     }, [selectedValuuttaFrom, selectedValuuttaTo])
 
-        // Haetaan kurssivaluutta jos se ei ole cachessä
-        const fetchRate = (rateKey) => {
-            if (!Rates[rateKey]) {
-                if (!CURRENCY_API_KEY) {
-                    console.error("Currency API key not found. Please add it to your .env file.")
-                    return
-                }
-                const client = new currencyapi(CURRENCY_API_KEY)
-                client.latest({
-                    base_currency: selectedValuuttaFrom,
-                    currencies: selectedValuuttaTo
-                })
+    // Haetaan kurssivaluutta jos se ei ole cachessä
+    const fetchRate = (rateKey) => {
+        if (!Rates[rateKey]) {
+            if (!CURRENCY_API_KEY) {
+                console.error("Currency API key not found. Please add it to your .env file.")
+                return
+            }
+            const client = new currencyapi(CURRENCY_API_KEY)
+            client.latest({
+                base_currency: selectedValuuttaFrom,
+                currencies: selectedValuuttaTo
+            })
                 .then((response) => {
                     const rate = response.data?.[selectedValuuttaTo]?.value
                     if (rate) {
@@ -48,102 +48,102 @@ export default function CurrencyCalculator() {
                         convertFrom(fromAmount, rate) // Muunnetaan uudella kurssivaluutalla
                     }
                 })
-                .catch((error) => console.error("error in conversion rate:", error)) 
-            } else {
-                convertFrom(fromAmount, Rates[rateKey])
-                console.log("Using cached rate for conversion:", Rates[rateKey])
-            }
+                .catch((error) => console.error("error in conversion rate:", error))
+        } else {
+            convertFrom(fromAmount, Rates[rateKey])
+            console.log("Using cached rate for conversion:", Rates[rateKey])
         }
+    }
 
-        // Konvertoidaan fromAmountista ToAmounttin 
-        const convertFrom = (amount, rate) => {
-            if (isNaN(amount) || !rate) return
-            const convertedAmount = parseFloat(amount) * rate
-            setFromAmount(amount)
-            setToAmount(convertedAmount.toFixed(2).toString())
+    // Konvertoidaan fromAmountista ToAmounttin 
+    const convertFrom = (amount, rate) => {
+        if (isNaN(amount) || !rate) return
+        const convertedAmount = parseFloat(amount) * rate
+        setFromAmount(amount)
+        setToAmount(convertedAmount.toFixed(2).toString())
+    }
+
+    // Konvertoidaan ToAmountinsta fromAmountiin
+    const convertTo = (amount, rate) => {
+        if (isNaN(amount) || !rate) return
+        const convertedAmount = parseFloat(amount) / rate
+        setToAmount(amount)
+        setFromAmount(convertedAmount.toFixed(2).toString())
+    }
+
+    //Handletään muunnokset fromAmountista ja tarkistetaan cache ennen kuin haetaan
+    const handleFromAmountChange = (amount) => {
+        setFromAmount(amount)
+        const rateKey = `${selectedValuuttaFrom}_${selectedValuuttaTo}`
+        const rate = Rates[rateKey]
+        if (rate) {
+            convertFrom(amount, rate) // Käytetään cachessa olevaa Ratea
+        } else {
+            fetchRate(rateKey)
         }
+    }
 
-        // Konvertoidaan ToAmountinsta fromAmountiin
-        const convertTo = (amount, rate) => {
-            if (isNaN(amount) || !rate) return
-            const convertedAmount = parseFloat(amount) / rate
-            setToAmount(amount)
-            setFromAmount(convertedAmount.toFixed(2).toString())
+    // Handletään muunnokset ToAmountista ja tarkistetaan cache ennen kuin haetaan
+    const handleToAmountChange = (amount) => {
+        setToAmount(amount)
+        const rateKey = `${selectedValuuttaFrom}_${selectedValuuttaTo}`
+        const rate = Rates[rateKey]
+        if (rate) {
+            convertTo(amount, rate)
+        } else {
+            fetchRate(rateKey)
         }
+    }
 
-        //Handletään muunnokset fromAmountista ja tarkistetaan cache ennen kuin haetaan
-        const handleFromAmountChange = (amount) => {
-            setFromAmount(amount)
-            const rateKey = `${selectedValuuttaFrom}_${selectedValuuttaTo}`
-            const rate = Rates[rateKey]
-            if (rate) {
-                convertFrom(amount, rate) // Käytetään cachessa olevaa Ratea
-            } else {
-                fetchRate(rateKey)
-            }
-        }
 
-        // Handletään muunnokset ToAmountista ja tarkistetaan cache ennen kuin haetaan
-        const handleToAmountChange = (amount) => {
-            setToAmount(amount)
-            const rateKey = `${selectedValuuttaFrom}_${selectedValuuttaTo}`
-            const rate = Rates[rateKey]
-            if (rate) {
-                convertTo(amount, rate)
-            } else {
-                fetchRate(rateKey)
-            }
-        }
-
-    
     return (
         <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
 
-                <View style={[styles.content, { backgroundColor: theme.colors.primary }]}>
-                    <View style={styles.component}>
-                        {!CURRENCY_API_KEY ? (<Text style={styles.TopText}>Api key not found</Text>) : null}
-                        <Text style={styles.TopText}>Amount</Text>
-                        <View style={styles.componetRow}>
-                            <LetterAvatar content={selectedValuuttaFrom.charAt(0)} />
-                            <Dropdown
-                                items={Valuutta.map((currency) => ({ label: currency, value: currency }))}
-                                selectedValue={selectedValuuttaFrom}
-                                onValueChange={(value) => setSelectedValuuttaFrom(value)}
-                            />
+            <View style={[styles.content, { backgroundColor: theme.colors.secondaryContainer }]}>
+                <View style={[styles.component, { backgroundColor: theme.colors.background }]}>
+                    {!CURRENCY_API_KEY ? (<Text style={styles.TopText}>Api key not found</Text>) : null}
+                    <Text style={styles.TopText}>Amount</Text>
+                    <View style={styles.componetRow}>
+                        <LetterAvatar content={selectedValuuttaFrom.charAt(0)} />
+                        <Dropdown
+                            items={Valuutta.map((currency) => ({ label: currency, value: currency }))}
+                            selectedValue={selectedValuuttaFrom}
+                            onValueChange={(value) => setSelectedValuuttaFrom(value)}
+                        />
 
-                            <TextInput
-                                style={styles.input}
-                                value={fromAmount}
-                                onChangeText={handleFromAmountChange}
-                                placeholder="Enter amount"
-                                keyboardType="numeric"
-                            />
+                        <TextInput
+                            style={styles.input}
+                            value={fromAmount}
+                            onChangeText={handleFromAmountChange}
+                            placeholder="Enter amount"
+                            keyboardType="numeric"
+                        />
 
-                        </View>
+                    </View>
 
-                        <View style={styles.divider}>
-                        </View>
-                        <Text style={styles.TopText2}>Converted amount</Text>
-                        <View style={styles.componetRow}>
-                            <LetterAvatar content={selectedValuuttaTo.charAt(0)} /> 
-                            <Dropdown
-                                items={Valuutta.map((currency) => ({ label: currency, value: currency }))}
-                                selectedValue={selectedValuuttaTo}
-                                onValueChange={(value) => setSelectedValuuttaTo(value)}
-                            />
-                            <TextInput
-                                style={styles.input}
-                                value={toAmount}
-                                onChangeText={handleToAmountChange}
-                                placeholder="Converted amount"
-                                keyboardType="numeric"
-                                
-                            />
-                        </View>
+                    <View style={styles.divider}>
+                    </View>
+                    <Text style={styles.TopText2}>Converted amount</Text>
+                    <View style={styles.componetRow}>
+                        <LetterAvatar content={selectedValuuttaTo.charAt(0)} />
+                        <Dropdown
+                            items={Valuutta.map((currency) => ({ label: currency, value: currency }))}
+                            selectedValue={selectedValuuttaTo}
+                            onValueChange={(value) => setSelectedValuuttaTo(value)}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            value={toAmount}
+                            onChangeText={handleToAmountChange}
+                            placeholder="Converted amount"
+                            keyboardType="numeric"
+
+                        />
                     </View>
                 </View>
-
             </View>
+
+        </View>
     )
 }
 
@@ -157,9 +157,14 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        width: '90%',
-        marginTop: 10,
-        marginBottom: 40,
+        borderRadius: 20,
+        padding: 20,
+        margin: 20,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 5,
     },
     component: {
         backgroundColor: '#ffffff',

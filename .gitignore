@@ -6,6 +6,8 @@ android/
 eas.json
 *.apk
 
+#gradle files
+.gradle/
 
 # dependencies
 node_modules/

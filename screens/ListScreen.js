@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { addList, deleteList, firestore } from '../firestore/config'
 import { onSnapshot, collection } from "firebase/firestore"
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useTheme, TextInput, Button } from 'react-native-paper'
-
-
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native'
+import { useTheme, TextInput, Button, Portal, Modal } from 'react-native-paper'
+import ListModal from '../components/ListModal'
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Alert } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
 
@@ -16,7 +15,17 @@ export default function ListScreen({ navigation }) {
   const [userId, setUserId] = useState(null)
 
   const theme = useTheme()
+  const [visible, setVisible] = useState(false)
+  const showModal = () => setVisible(true)
 
+  const hideModal = () =>
+    Alert.alert('Varoitus', 'Haluatko keskeyttää listan luomisen', [
+      {
+        text: 'En',
+        style: 'cancel',
+      },
+      { text: 'Kyllä', onPress: () => setVisible(false) },
+    ])
 
   useEffect(() => {
     const fetchUserId = async () => {
@@ -68,15 +77,15 @@ export default function ListScreen({ navigation }) {
     <View style={[styles.listContent, { backgroundColor: theme.colors.primary }]}>
       {userId ? (
         <>
-          <TextInput style={[styles.listInput, { backgroundColor: theme.colors.surface }]}
-            placeholder="New List Name"
-            value={newListName}
-            onChangeText={setNewListName}
-          />
+          <Portal>
+            <Modal contentContainerStyle={styles.listmodal} visible={visible} onDismiss={hideModal} >
+              <ListModal userId={userId} hideModal={hideModal} setVisible={setVisible} />
+            </Modal>
+          </Portal>
           <Button theme={{ colors: { primary: theme.colors.primary } }}
             mode='elevated'
             textColor='black'
-            onPress={createList} >
+            onPress={showModal} >
             create list
           </Button>
           <FlatList
@@ -137,6 +146,12 @@ const styles = StyleSheet.create({
   listText: {
     fontSize: 18
   },
+  listmodal: {
+    position: 'absolute',
+    top: 30,
+    right: 0,
+    left: 0,
+  }
 })
 
 

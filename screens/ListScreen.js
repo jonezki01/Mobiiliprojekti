@@ -26,7 +26,9 @@ export default function ListScreen({ navigation }) {
       },
       { text: 'Kyllä', onPress: () => setVisible(false) },
     ])
-
+  
+  
+  
   useEffect(() => {
     const fetchUserId = async () => {
       const id = await AsyncStorage.getItem('userEmail')
@@ -63,8 +65,17 @@ export default function ListScreen({ navigation }) {
     }
   }
 
+  const deleteListAlert = (listId) => {
+    Alert.alert('Varoitus', 'Haluatko poistaa listan', [
+      {
+        text: 'En',
+        style: 'cancel',
+      },
+      { text: 'Kyllä', onPress: () => handleDeleteList(listId) },
+    ])
+  }
+
   const handleDeleteList = async (listId) => {
-    if (!userId) return
     try {
       await deleteList(userId, listId)
     } catch (error) {
@@ -99,7 +110,7 @@ export default function ListScreen({ navigation }) {
                   <Text style={styles.listDetail}>Kohde: {item.matkanKohde}</Text>
                   <Text style={styles.listDetail}>{item.range.startDate.toDate().toLocaleDateString()} - {item.range.endDate.toDate().toLocaleDateString()} </Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => handleDeleteList(item.id)}>
+                <TouchableOpacity onPress={() => deleteListAlert(item.id)}>
                   <Ionicons name="trash-outline" size={24} color="red" />
                 </TouchableOpacity>
               </View>

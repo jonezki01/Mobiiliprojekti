@@ -72,7 +72,7 @@ const ListModal = ({ userId, hideModal, setVisible }) => {
   }
 
   return (
-    <View style={[styles.roundedView, { backgroundColor: theme.colors.onPrimary }]}>
+    <View style={[styles.roundedView, { backgroundColor: theme.colors.tertiaryContainer }]}>
 
       <View /* style={styles.modal} */>
         <Text style={styles.title}>Luo uusi lista</Text>

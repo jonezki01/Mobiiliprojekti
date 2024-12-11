@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View, ActivityIndicator, Image } from 'react-native'
+import { StyleSheet, View, ActivityIndicator, Image } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { useTheme, TextInput } from 'react-native-paper'
+import { useTheme, TextInput, Text } from 'react-native-paper'
 import * as Location from 'expo-location'
 
 export default function Weather() {
@@ -78,81 +78,48 @@ export default function Weather() {
     })()
   }, [])
 
-  if (loading) {
-    return (
-      <View style={[styles.weatherContent, { backgroundColor: theme.colors.secondaryContainer }]}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    )
-  }
 
-  // Handle errors
-  if (error) {
-    if (error == 'Network error: 404') {
-      return (
-        <View style={[styles.weatherContent, { backgroundColor: theme.colors.secondaryContainer }]}>
-          <View style={styles.topContainer}>
-            <TextInput
-              style={[styles.citySearch, { backgroundColor: theme.colors.surface }]}
-              placeholder="City"
-              value={city}
-              onChangeText={setCity}
-              onSubmitEditing={handleCitySubmit}
-            />
-          </View>
-          <View style={styles.middleContainer}>
-            <Text style={[{ color: theme.colors.tertiary }]}>City not found</Text>
-          </View>
-        </View>
-      )
-    } else if (error == 'Network error: 401') {
-      return (
-        <View style={[styles.weatherContent, { backgroundColor: theme.colors.secondaryContainer }]}>
-          <Text style={[{ color: theme.colors.tertiary }]}>Invalid API key</Text>
-        </View>
-      )
-    } else {
-      return (
-        <View style={[styles.weatherContent, { backgroundColor: theme.colors.secondaryContainer }]}>
-          <Text style={[{ color: theme.colors.tertiary }]}>{error}</Text>
-        </View>
-      )
-    }
-
-  }
 
   return (
     <View style={[styles.weatherContent, { backgroundColor: theme.colors.secondaryContainer }]}>
-      <View style={styles.topContainer}>
-        <TextInput
-          style={[styles.citySearch, { backgroundColor: theme.colors.surface }]}
-          placeholder="City"
-          value={city}
-          onChangeText={setCity}
-          onSubmitEditing={handleCitySubmit}
-        />
-      </View>
-      <View style={styles.middleContainer}>
-        {weatherData && (
+        <View style={[styles.tertiaryContainer, { backgroundColor: theme.colors.tertiaryContainer }]}>
+          <TextInput
+            style={[styles.citySearch, { backgroundColor: theme.colors.surface }]}
+            label="City"
+            mode='outlined'
+            value={city}
+            onChangeText={setCity}
+            onSubmitEditing={handleCitySubmit}
+            height={40}
+          />
+        </View>
+        <View style={[styles.tertiaryContainer, { backgroundColor: theme.colors.tertiaryContainer }]}>
+          {!error && weatherData && (
           <>
+            <Text style={[{ color: theme.colors.tertiary }]}>Sää nyt</Text>
             <Text style={[{ color: theme.colors.tertiary }]}>{weatherData.name}, {weatherData.sys.country}</Text>
             <Text style={[{ color: theme.colors.tertiary }]}>{weatherData.main.temp}°C</Text>
             <Text style={[{ color: theme.colors.tertiary }]}>{weatherData.weather[0].description}</Text>
             <Image source={{ uri: `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png` }} style={styles.weatherIcon} />
           </>
-        )}
+
+          )}
+          {error == 'Network error: 404' && (<Text style={[{ color: theme.colors.tertiary }]}>City not found</Text>)}
+          {error == 'Network error: 401' && (<Text style={[{ color: theme.colors.tertiary }]}>Invalid API key</Text>)}
+          {error && (<Text style={[{ color: theme.colors.tertiary }]}>{error}</Text>)}
+          {(loading || !weatherData) && (<ActivityIndicator size="large" color={theme.colors.tertiary} />)}
+        </View>
       </View>
-    </View>
   )
 }
 
 const styles = StyleSheet.create({
   weatherContent: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'top',
     alignItems: 'center',
     borderRadius: 20,
-    padding: 20,
+    padding: 10,
     margin: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -160,13 +127,21 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 5,
   },
-  topContainer: {
+  tertiaryContainer: {
     width: '100%',
+    borderRadius: 10,
+    padding: 20,
+    marginBottom: 10,
+    justifyContent: 'top',
+    alignItems: 'center',
+  },
+
+  topContainer: {
     alignItems: 'center',
   },
   middleContainer: {
-    flex: 1,
-    justifyContent: 'center',
+    marginTop: 20,
+    justifyContent: 'top',
     alignItems: 'center',
   },
   weatherIcon: {
@@ -175,11 +150,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   citySearch: {
-    width: '60%',
-    height: 30,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 10,
+    marginBottom: 10,
+    width: '100%',
+    borderRadius: 10,
   }
 })

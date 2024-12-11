@@ -1,45 +1,45 @@
-import React, { useEffect, useState } from 'react';
-import { addItemToList, deleteItem, firestore } from '../firestore/config';
-import { onSnapshot, collection } from "firebase/firestore";
+import React, { useEffect, useState } from 'react'
+import { addItemToList, deleteItem, firestore } from '../firestore/config'
+import { onSnapshot, collection } from "firebase/firestore"
 import { useTheme, TextInput, Button } from 'react-native-paper'
 
 
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
 
 
 export default function ItemScreen({ route }) {
-  const { userId, listId, listMetaData } = route.params;
-  const [items, setItems] = useState([]);
-  const [newItem, setNewItem] = useState('');
+  const { userId, listId, listMetaData } = route.params
+  const [items, setItems] = useState([])
+  const [newItem, setNewItem] = useState('')
 
   const theme = useTheme()
 
 
   useEffect(() => {
-    const itemsRef = collection(firestore, 'users', userId, 'lists', listId, 'items');
+    const itemsRef = collection(firestore, 'users', userId, 'lists', listId, 'items')
     const unsubscribe = onSnapshot(itemsRef, (snapshot) => {
-      const fetchedItems = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setItems(fetchedItems);
-    });
+      const fetchedItems = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+      setItems(fetchedItems)
+    })
 
-    return () => unsubscribe();
-  }, [userId, listId]);
+    return () => unsubscribe()
+  }, [userId, listId])
 
   const addItem = async () => {
     if (newItem.trim()) {
       const itemData = {
         name: newItem,
         timestamp: new Date(),
-      };
-      await addItemToList(userId, listId, itemData);
-      setNewItem('');
+      }
+      await addItemToList(userId, listId, itemData)
+      setNewItem('')
     }
-  };
+  }
 
   const removeItem = async (itemId) => {
-    await deleteItem(userId, listId, itemId);
-  };
+    await deleteItem(userId, listId, itemId)
+  }
 
   return (
 
@@ -48,32 +48,32 @@ export default function ItemScreen({ route }) {
       <Text style={styles.listDetail}>Tyyppi: {listMetaData.matkaLuokka}</Text>
       <Text style={styles.listDetail}>Kohde: {listMetaData.matkanKohde}</Text>
       <Text style={styles.listDetail}>{listMetaData.range.startDate.toDate().toLocaleDateString()} - {listMetaData.range.endDate.toDate().toLocaleDateString()} </Text>
-      <TextInput style={[styles.itemInput, { backgroundColor: theme.colors.surface }]}
-        placeholder="Add a new item"
+      <TextInput
+        style={[styles.itemInput, { backgroundColor: theme.colors.surface }]}
+        mode="outlined"
+        label="Lisää uusi tavara"
         value={newItem}
         onChangeText={setNewItem}
       />
       <Button theme={{ colors: { primary: theme.colors.primary } }}
         mode='elevated'
-        textColor='black'
-        title="Add Item"
         onPress={addItem}>
-        add item
+        Lisää tavara
       </Button>
-      <FlatList
+      <FlatList style={[styles.tertiaryContainer, { backgroundColor: theme.colors.tertiaryContainer }]}
         data={items}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.itemContainer}>
             <Text style={styles.itemText}>{item.name}</Text>
             <TouchableOpacity onPress={() => removeItem(item.id)}>
-              <Ionicons name="trash-outline" size={24} color="red" />
+              <Ionicons name="trash-outline" size={24} style={{ color: theme.colors.onErrorContainer }}  />
             </TouchableOpacity>
           </View>
         )}
       />
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -91,28 +91,21 @@ const styles = StyleSheet.create({
   },
   itemInput: {
     width: '100%',
-    height: 30,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 20,
-    marginTop: 10,
-    padding: 10,
+
   },
 
   itemContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee'
+    padding: 7,
+    borderBottomWidth: 0.5,
   },
 
   itemText: {
-    fontSize: 18
+    fontSize: 16
   },
-  
+
   listText: {
     fontSize: 18
   },
@@ -122,4 +115,15 @@ const styles = StyleSheet.create({
     color: 'gray',
     marginTop: 2,
   },
-});
+  itemInput: {
+    marginBottom: 10,
+    width: '100%',
+    borderRadius: 10,
+  },
+  tertiaryContainer: {
+    width: '100%',
+    borderRadius: 10,
+    padding: 10,
+    marginTop: 10,
+  },
+})

@@ -97,52 +97,48 @@ export default function CurrencyCalculator() {
 
 
     return (
-        <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+        <View style={[styles.content, { backgroundColor: theme.colors.secondaryContainer }]}>
+            <View style={[styles.component, { backgroundColor: theme.colors.background }]}>
+                {!CURRENCY_API_KEY ? (<Text style={styles.TopText}>Api key not found</Text>) : null}
+                <Text style={styles.TopText}>Amount</Text>
+                <View style={styles.componetRow}>
+                    <LetterAvatar content={selectedValuuttaFrom.charAt(0)} />
+                    <Dropdown
+                        items={Valuutta.map((currency) => ({ label: currency, value: currency }))}
+                        selectedValue={selectedValuuttaFrom}
+                        onValueChange={(value) => setSelectedValuuttaFrom(value)}
+                    />
 
-            <View style={[styles.content, { backgroundColor: theme.colors.secondaryContainer }]}>
-                <View style={[styles.component, { backgroundColor: theme.colors.background }]}>
-                    {!CURRENCY_API_KEY ? (<Text style={styles.TopText}>Api key not found</Text>) : null}
-                    <Text style={styles.TopText}>Amount</Text>
-                    <View style={styles.componetRow}>
-                        <LetterAvatar content={selectedValuuttaFrom.charAt(0)} />
-                        <Dropdown
-                            items={Valuutta.map((currency) => ({ label: currency, value: currency }))}
-                            selectedValue={selectedValuuttaFrom}
-                            onValueChange={(value) => setSelectedValuuttaFrom(value)}
-                        />
+                    <TextInput
+                        style={styles.input}
+                        value={fromAmount}
+                        onChangeText={handleFromAmountChange}
+                        placeholder="Enter amount"
+                        keyboardType="numeric"
+                    />
 
-                        <TextInput
-                            style={styles.input}
-                            value={fromAmount}
-                            onChangeText={handleFromAmountChange}
-                            placeholder="Enter amount"
-                            keyboardType="numeric"
-                        />
+                </View>
 
-                    </View>
+                <View style={styles.divider}>
+                </View>
+                <Text style={styles.TopText2}>Converted amount</Text>
+                <View style={styles.componetRow}>
+                    <LetterAvatar content={selectedValuuttaTo.charAt(0)} />
+                    <Dropdown
+                        items={Valuutta.map((currency) => ({ label: currency, value: currency }))}
+                        selectedValue={selectedValuuttaTo}
+                        onValueChange={(value) => setSelectedValuuttaTo(value)}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        value={toAmount}
+                        onChangeText={handleToAmountChange}
+                        placeholder="Converted amount"
+                        keyboardType="numeric"
 
-                    <View style={styles.divider}>
-                    </View>
-                    <Text style={styles.TopText2}>Converted amount</Text>
-                    <View style={styles.componetRow}>
-                        <LetterAvatar content={selectedValuuttaTo.charAt(0)} />
-                        <Dropdown
-                            items={Valuutta.map((currency) => ({ label: currency, value: currency }))}
-                            selectedValue={selectedValuuttaTo}
-                            onValueChange={(value) => setSelectedValuuttaTo(value)}
-                        />
-                        <TextInput
-                            style={styles.input}
-                            value={toAmount}
-                            onChangeText={handleToAmountChange}
-                            placeholder="Converted amount"
-                            keyboardType="numeric"
-
-                        />
-                    </View>
+                    />
                 </View>
             </View>
-
         </View>
     )
 }
@@ -155,7 +151,7 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'top',
         alignItems: 'center',
         borderRadius: 20,
         padding: 20,
@@ -169,7 +165,7 @@ const styles = StyleSheet.create({
     component: {
         backgroundColor: '#ffffff',
         height: 300,
-        borderRadius: 30,
+        borderRadius: 10,
         marginVertical: 30,
         marginHorizontal: 20,
     },

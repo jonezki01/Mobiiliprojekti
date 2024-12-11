@@ -2,8 +2,9 @@ import React, { useState, useCallback } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { Text, Button, TextInput, useTheme } from 'react-native-paper'
 import { Dropdown } from 'react-native-paper-dropdown'
-import { DatePickerModal } from 'react-native-paper-dates'
+import { DatePickerModal, registerTranslation } from 'react-native-paper-dates'
 import { addList } from '../firestore/config'
+
 
 const ListModal = ({ userId, hideModal, setVisible }) => {
   const [listName, setListName] = useState('')
@@ -12,6 +13,25 @@ const ListModal = ({ userId, hideModal, setVisible }) => {
   const [range, setRange] = useState({ startDate: undefined, endDate: undefined })
   const [open, setOpen] = useState(false)
   const theme = useTheme()
+
+  registerTranslation('fi', {
+    save: 'Tallenna',
+    selectSingle: 'Valitse päivä',
+    selectMultiple: 'Valitse päivät',
+    selectRange: 'Valitse aikaväli',
+    notAccordingToDateFormat: (inputFormat) =>
+      `Ei vastaa muotoa ${inputFormat}`,
+    mustBeHigherThan: (date) => `Täytyy olla myöhempi kuin ${date}`,
+    mustBeLowerThan: (date) => `Täytyy olla aikaisempi kuin ${date}`,
+    mustBeBetween: (startDate, endDate) =>
+      `Täytyy olla ${startDate} ja ${endDate} välillä`,
+    dateIsDisabled: 'Päivä ei ole sallittu',
+    previous: 'Edellinen',
+    next: 'Seuraava',
+    typeInDate: 'Kirjoita päivämäärä',
+    pickDateFromCalendar: 'Valitse päivä kalenterista',
+    close: 'Sulje',
+  })
 
   const onDismiss = useCallback(() => {
     setOpen(false)

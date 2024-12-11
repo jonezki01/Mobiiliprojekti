@@ -55,7 +55,7 @@ export default function App() {
     const Stack = createStackNavigator();
     return(
       <Stack.Navigator>
-      <Stack.Screen name="Settings"
+      <Stack.Screen name="SettingsSubmenu"
       options={{ headerShown: false }}
       >
         {(props) => (
@@ -82,7 +82,7 @@ export default function App() {
         {logged ? (
           <NavigationContainer theme={theme}>
             <Tab.Navigator
-              initialRouteName="Weather"
+              initialRouteName="List"
               screenOptions={({ route }) => ({
                 
                 headerStyle: {

@@ -47,7 +47,7 @@ export default function ItemScreen({ route }) {
       <Text style={styles.listText}>Listan {listMetaData.name} tavarat</Text>
       <Text style={styles.listDetail}>Tyyppi: {listMetaData.matkaLuokka}</Text>
       <Text style={styles.listDetail}>Kohde: {listMetaData.matkanKohde}</Text>
-      <Text style={styles.listDetail}>{listMetaData.range.startDate.toDate().toLocaleDateString()} - {listMetaData.range.endDate.toDate().toLocaleDateScrtring()} </Text>
+      <Text style={styles.listDetail}>{listMetaData.range.startDate.toDate().toLocaleDateString()} - {listMetaData.range.endDate.toDate().toLocaleDateString()} </Text>
       <TextInput style={[styles.itemInput, { backgroundColor: theme.colors.surface }]}
         placeholder="Add a new item"
         value={newItem}

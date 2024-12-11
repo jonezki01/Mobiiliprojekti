@@ -23,10 +23,10 @@ const ListModal = ({ userId, hideModal, setVisible }) => {
   }, [])
 
   const OPTIONS = [
-    { label: 'Lomamatka', value: 'lomamatka' },
-    { label: 'Retkeily', value: 'retkeily' },
-    { label: 'Metsästys', value: 'metsästys' },
-    { label: 'Kalastus', value: 'kalastus' },
+    { label: 'Lomamatka', value: 'Lomamatka' },
+    { label: 'Retkeily', value: 'Retkeily' },
+    { label: 'Metsästys', value: 'Metsästys' },
+    { label: 'Kalastus', value: 'Kalastus' },
   ]
 
   const handleCreateList = async () => {

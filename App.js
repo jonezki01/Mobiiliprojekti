@@ -51,6 +51,27 @@ export default function App() {
     )
   }
 
+  const SettingsStack = ({ toggleTheme, isDarkTheme }) =>{
+    const Stack = createStackNavigator();
+    return(
+      <Stack.Navigator>
+      <Stack.Screen name="Settings"
+      options={{ headerShown: false }}
+      >
+        {(props) => (
+          <SettingsScreen
+            {...props}
+            toggleTheme={toggleTheme}
+            isDarkTheme={isDarkTheme}
+          />
+        )}
+      </Stack.Screen>
+
+      <Stack.Screen name="Credits" component={Credits}/>
+    </Stack.Navigator>
+    );
+  }
+
   return (
     <SafeAreaProvider>
       <PaperProvider theme={theme}>
@@ -100,17 +121,16 @@ export default function App() {
             >
               <Tab.Screen name="List" options={{ headerShown: false }} component={ListStack} />
               <Tab.Screen name="Currency" component={CurrencyScreen} />
-              <Tab.Screen name="Credits" component={Credits}    />   
               <Tab.Screen name="Weather" component={WeatherScreen} />
-              <Tab.Screen name="Settings">{(props) => (<SettingsScreen
-                    {...props}
-                    toggleTheme={toggleTheme}
-                    isDarkTheme={isDarkTheme}
-                  />
-                )}
-                   
-
-              </Tab.Screen>
+              <Tab.Screen name="Settings">
+              {(props) => (
+                <SettingsStack
+                  {...props}
+                  toggleTheme={toggleTheme}
+                  isDarkTheme={isDarkTheme}
+                />
+              )}
+            </Tab.Screen>
             </Tab.Navigator>
           </NavigationContainer>
         ) : (

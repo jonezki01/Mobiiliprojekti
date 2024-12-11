@@ -5,6 +5,7 @@ android/
 ./vscode/
 eas.json
 *.apk
+support-files/.gradle/
 
 #gradle files
 .gradle/

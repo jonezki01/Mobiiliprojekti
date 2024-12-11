@@ -27,6 +27,13 @@ export default function SettingsScreen({ navigation, toggleTheme, isDarkTheme })
           onPress={() => navigation.navigate('Notifications')}
         />
       </View>
+      <View style={styles.settingsContainer}>
+          <CreditsItem 
+          icon="menu"
+          label="Credits"
+          navigation={navigation}
+          />
+        </View>
     </View>
   );
 }
@@ -34,6 +41,18 @@ export default function SettingsScreen({ navigation, toggleTheme, isDarkTheme })
 function SettingItem({ icon, label, onPress }) {
   return (
     <TouchableOpacity style={styles.settingItem} onPress={onPress}>
+      <View style={styles.settingLabel}>
+        <Icon name={icon} size={24} color="#000" />
+        <Text style={styles.settingText}>{label}</Text>
+      </View>
+      <Icon name="chevron-right" size={24} color="#000" />
+    </TouchableOpacity>
+  );
+}
+
+function CreditsItem({ icon, label, navigation }) {
+  return (
+    <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('Credits')}>
       <View style={styles.settingLabel}>
         <Icon name={icon} size={24} color="#000" />
         <Text style={styles.settingText}>{label}</Text>
@@ -74,6 +93,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#e9e7f6',
     borderRadius: 8,
     paddingVertical: 8,
+    marginTop:4,
   },
   settingItem: {
     flexDirection: 'row',
@@ -81,8 +101,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
   },
   settingLabel: {
     flexDirection: 'row',

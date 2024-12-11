@@ -93,14 +93,17 @@ export default function ListScreen({ navigation }) {
             keyExtractor={(list) => list.id}
             renderItem={({ item }) => (
               <View style={styles.listContainer}>
-                <TouchableOpacity onPress={() => navigation.navigate('Items', { listId: item.id, userId })}>
+                <TouchableOpacity onPress={() => navigation.navigate('Items', { listId: item.id, userId, listMetaData: item})}>
                   <Text style={styles.listText}>{item.name}</Text>
+                  <Text style={styles.listDetail}>{item.matkaLuokka}</Text>
+                  <Text style={styles.listDetail}>Kohde: {item.matkanKohde}</Text>
+                  <Text style={styles.listDetail}>{item.range.startDate.toDate().toLocaleDateString()} - {item.range.endDate.toDate().toLocaleDateString()} </Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => handleDeleteList(item.id)}>
                   <Ionicons name="trash-outline" size={24} color="red" />
                 </TouchableOpacity>
               </View>
-            )}
+      )}
           />
         </>
       ) : (
@@ -151,7 +154,12 @@ const styles = StyleSheet.create({
     top: 30,
     right: 0,
     left: 0,
-  }
+  },
+  listDetail: {
+    fontSize: 14,
+    color: 'gray',
+    marginTop: 2,
+  },
 })
 
 

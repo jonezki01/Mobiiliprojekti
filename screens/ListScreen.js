@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { addList, deleteList, firestore } from '../firestore/config'
 import { onSnapshot, collection } from "firebase/firestore"
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useTheme, TextInput, Button, Portal, Modal } from 'react-native-paper'
+import { useTheme, Button, Portal, Modal, Text } from 'react-native-paper'
 import ListModal from '../components/ListModal'
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, Alert } from 'react-native'
+import { View, FlatList, TouchableOpacity, StyleSheet, Alert } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
 
@@ -26,9 +26,9 @@ export default function ListScreen({ navigation }) {
       },
       { text: 'Kyllä', onPress: () => setVisible(false) },
     ])
-  
-  
-  
+
+
+
   useEffect(() => {
     const fetchUserId = async () => {
       const id = await AsyncStorage.getItem('userEmail')
@@ -93,28 +93,32 @@ export default function ListScreen({ navigation }) {
               <ListModal userId={userId} hideModal={hideModal} setVisible={setVisible} />
             </Modal>
           </Portal>
-          <Button theme={{ colors: { primary: theme.colors.primary } }}
-            mode='elevated'
-            textColor='black'
-            onPress={showModal} >
-            create list
-          </Button>
+          <View style={styles.paddingbottom}>
+            <Button 
+              mode='elevated'
+              onPress={showModal}
+              contentStyle={{ backgroundColor: theme.colors.primaryContainer,  }}
+              labelStyle={{ color: theme.colors.onPrimaryContainer, fontSize: 16 }}
+              >
+              Luo uusi lista
+            </Button>
+          </View>
           <FlatList
             data={lists}
             keyExtractor={(list) => list.id}
             renderItem={({ item }) => (
-              <View style={styles.listContainer}>
-                <TouchableOpacity onPress={() => navigation.navigate('Items', { listId: item.id, userId, listMetaData: item})}>
-                  <Text style={styles.listText}>{item.name}</Text>
-                  <Text style={styles.listDetail}>{item.matkaLuokka}</Text>
-                  <Text style={styles.listDetail}>Kohde: {item.matkanKohde}</Text>
-                  <Text style={styles.listDetail}>{item.range.startDate.toDate().toLocaleDateString()} - {item.range.endDate.toDate().toLocaleDateString()} </Text>
+              <View style={[styles.listContainer, { backgroundColor: theme.colors.tertiaryContainer }]}>
+                <TouchableOpacity onPress={() => navigation.navigate('Items', { listId: item.id, userId, listMetaData: item })}>
+                  <Text variant="labelLarge" style={{ color: theme.colors.onSecondaryContainer }}>{item.name}</Text>
+                  <Text variant="labelMedium" style={{ color: theme.colors.onSecondaryContainer }}>{item.matkaLuokka}</Text>
+                  <Text variant="labelMedium" style={{ color: theme.colors.onSecondaryContainer }}>Kohde: {item.matkanKohde}</Text>
+                  <Text variant="labelMedium" style={{ color: theme.colors.onSecondaryContainer }}>{item.range.startDate.toDate().toLocaleDateString()} - {item.range.endDate.toDate().toLocaleDateString()} </Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => deleteListAlert(item.id)}>
-                  <Ionicons name="trash-outline" size={24} color="red" />
+                  <Ionicons name="trash-outline" size={24} style={{ color: theme.colors.onErrorContainer }} />
                 </TouchableOpacity>
               </View>
-      )}
+            )}
           />
         </>
       ) : (
@@ -129,7 +133,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     borderRadius: 20,
-    padding: 20,
+    padding: 10,
     margin: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -147,14 +151,23 @@ const styles = StyleSheet.create({
     marginTop: 10,
     padding: 10,
   },
+  paddingbottom: {
+    marginBottom: 20,
+  },
 
   listContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee'
+    padding: 10,
+    marginBottom: 10,
+    borderRadius: 10,
+  },
+
+  listItem: {
+    borderRadius: 10,
+    width: '100%',
+    marginBottom: 10,
   },
 
   listText: {
@@ -168,7 +181,6 @@ const styles = StyleSheet.create({
   },
   listDetail: {
     fontSize: 14,
-    color: 'gray',
     marginTop: 2,
   },
 })

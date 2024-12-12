@@ -5,6 +5,18 @@ import { useTheme } from 'react-native-paper';
 
 export default function SettingsScreen({ navigation, toggleTheme, isDarkTheme }) {
   const theme = useTheme();
+
+  const SettingItem = ({ icon, label, onPress }) => {
+    return (
+      <TouchableOpacity style={styles.settingItem} onPress={onPress}>
+        <View style={styles.settingLabel}>
+          <Icon name={icon} size={24} style={{ color: theme.colors.onTertiaryContainer }} />
+          <Text style={styles.settingText}>{label}</Text>
+        </View>
+        <Icon name="chevron-right" style={{ color: theme.colors.onTertiaryContainer }} />
+      </TouchableOpacity>
+    )
+  }  
   
 
   return (
@@ -20,45 +32,21 @@ export default function SettingsScreen({ navigation, toggleTheme, isDarkTheme })
         </TouchableOpacity>
       </View>
       <View style={styles.divider} />
-      <View style={styles.settingsContainer}>
+      <View style={[styles.settingsContainer, { backgroundColor: theme.colors.tertiaryContainer }]}>
         <SettingItem
           icon="notifications"
           label="Notifications"
           onPress={() => navigation.navigate('Notifications')}
         />
       </View>
-      <View style={styles.settingsContainer}>
-          <CreditsItem 
+      <View style={[styles.settingsContainer, { backgroundColor: theme.colors.tertiaryContainer }]}>
+          <SettingItem 
           icon="menu"
           label="Credits"
-          navigation={navigation}
+          onPress={() => navigation.navigate('Credits')}
           />
         </View>
     </View>
-  );
-}
-
-function SettingItem({ icon, label, onPress }) {
-  return (
-    <TouchableOpacity style={styles.settingItem} onPress={onPress}>
-      <View style={styles.settingLabel}>
-        <Icon name={icon} size={24} color="#000" />
-        <Text style={styles.settingText}>{label}</Text>
-      </View>
-      <Icon name="chevron-right" size={24} color="#000" />
-    </TouchableOpacity>
-  );
-}
-
-function CreditsItem({ icon, label, navigation }) {
-  return (
-    <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('Credits')}>
-      <View style={styles.settingLabel}>
-        <Icon name={icon} size={24} color="#000" />
-        <Text style={styles.settingText}>{label}</Text>
-      </View>
-      <Icon name="chevron-right" size={24} color="#000" />
-    </TouchableOpacity>
   );
 }
 
@@ -90,7 +78,6 @@ const styles = StyleSheet.create({
     marginVertical: 16,
   },
   settingsContainer: {
-    backgroundColor: '#e9e7f6',
     borderRadius: 8,
     paddingVertical: 8,
     marginTop:4,

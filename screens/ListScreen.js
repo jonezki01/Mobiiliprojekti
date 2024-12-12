@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { addList, deleteList, firestore } from '../firestore/config'
 import { onSnapshot, collection } from "firebase/firestore"
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useTheme, TextInput, Button, Portal, Modal, Text } from 'react-native-paper'
+import { useTheme, Button, Portal, Modal, Text } from 'react-native-paper'
 import ListModal from '../components/ListModal'
 import { View, FlatList, TouchableOpacity, StyleSheet, Alert } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
@@ -26,9 +26,9 @@ export default function ListScreen({ navigation }) {
       },
       { text: 'Kyllä', onPress: () => setVisible(false) },
     ])
-  
-  
-  
+
+
+
   useEffect(() => {
     const fetchUserId = async () => {
       const id = await AsyncStorage.getItem('userEmail')
@@ -94,28 +94,31 @@ export default function ListScreen({ navigation }) {
             </Modal>
           </Portal>
           <View style={styles.paddingbottom}>
-          <Button theme={{ colors: { primary: theme.colors.primary } }}
-            mode='elevated'
-            onPress={showModal} >
-            Luo uusi lista
-          </Button>
+            <Button 
+              mode='elevated'
+              onPress={showModal}
+              contentStyle={{ backgroundColor: theme.colors.primaryContainer,  }}
+              labelStyle={{ color: theme.colors.onPrimaryContainer, fontSize: 16 }}
+              >
+              Luo uusi lista
+            </Button>
           </View>
           <FlatList
             data={lists}
             keyExtractor={(list) => list.id}
             renderItem={({ item }) => (
-              <View style={[styles.listContainer, { backgroundColor: theme.colors.tertiaryContainer}]}>
-                <TouchableOpacity onPress={() => navigation.navigate('Items', { listId: item.id, userId, listMetaData: item})}>
-                  <Text variant="labelLarge" style={{color: theme.colors.onSecondaryContainer}}>{item.name}</Text>
-                  <Text variant="labelMedium" style={{color: theme.colors.onSecondaryContainer}}>{item.matkaLuokka}</Text>
-                  <Text variant="labelMedium" style={{color: theme.colors.onSecondaryContainer}}>Kohde: {item.matkanKohde}</Text>
-                  <Text variant="labelMedium" style={{color: theme.colors.onSecondaryContainer}}>{item.range.startDate.toDate().toLocaleDateString()} - {item.range.endDate.toDate().toLocaleDateString()} </Text>
+              <View style={[styles.listContainer, { backgroundColor: theme.colors.tertiaryContainer }]}>
+                <TouchableOpacity onPress={() => navigation.navigate('Items', { listId: item.id, userId, listMetaData: item })}>
+                  <Text variant="labelLarge" style={{ color: theme.colors.onSecondaryContainer }}>{item.name}</Text>
+                  <Text variant="labelMedium" style={{ color: theme.colors.onSecondaryContainer }}>{item.matkaLuokka}</Text>
+                  <Text variant="labelMedium" style={{ color: theme.colors.onSecondaryContainer }}>Kohde: {item.matkanKohde}</Text>
+                  <Text variant="labelMedium" style={{ color: theme.colors.onSecondaryContainer }}>{item.range.startDate.toDate().toLocaleDateString()} - {item.range.endDate.toDate().toLocaleDateString()} </Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => deleteListAlert(item.id)}>
                   <Ionicons name="trash-outline" size={24} style={{ color: theme.colors.onErrorContainer }} />
                 </TouchableOpacity>
               </View>
-      )}
+            )}
           />
         </>
       ) : (

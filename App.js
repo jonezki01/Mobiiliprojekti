@@ -87,11 +87,6 @@ export default function App() {
                 
                 headerStyle: {
                   backgroundColor: theme.colors.secondaryContainer,
-                  shadowColor: '#000',
-                  shadowOffset: { width: 0, height: 4 },
-                  shadowOpacity: 1,
-                  shadowRadius: 5,
-                  elevation: 5,
                 },
                 headerTintColor: theme.colors.onSurface,
                 headerTitleStyle: {

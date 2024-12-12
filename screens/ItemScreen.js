@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { addItemToList, deleteItem, firestore } from '../firestore/config'
 import { onSnapshot, collection } from "firebase/firestore"
-import { useTheme, TextInput, Button } from 'react-native-paper'
+import { useTheme, Text, TextInput, Button } from 'react-native-paper'
 
 
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, FlatList, TouchableOpacity, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
 
@@ -42,12 +42,13 @@ export default function ItemScreen({ route }) {
   }
 
   return (
-
     <View style={[styles.itemContent, { backgroundColor: theme.colors.secondaryContainer }]}>
-      <Text style={styles.listText}>Listan {listMetaData.name} tavarat</Text>
-      <Text style={styles.listDetail}>Tyyppi: {listMetaData.matkaLuokka}</Text>
-      <Text style={styles.listDetail}>Kohde: {listMetaData.matkanKohde}</Text>
-      <Text style={styles.listDetail}>{listMetaData.range.startDate.toDate().toLocaleDateString()} - {listMetaData.range.endDate.toDate().toLocaleDateString()} </Text>
+      <View style={[styles.textContainer, { backgroundColor: theme.colors.tertiaryContainer}]} >
+        <Text variant="labelLarge" style={{ color: theme.colors.onTertiaryContainer }}>Listan {listMetaData.name} tavarat</Text>
+        <Text variant="labelMedium" style={{ color: theme.colors.onTertiaryContainer }}>Tyyppi: {listMetaData.matkaLuokka}</Text>
+        <Text variant="labelMedium" style={{ color: theme.colors.onTertiaryContainer }}>Kohde: {listMetaData.matkanKohde}</Text>
+        <Text variant="labelMedium" style={{ color: theme.colors.onTertiaryContainer }}>{listMetaData.range.startDate.toDate().toLocaleDateString()} - {listMetaData.range.endDate.toDate().toLocaleDateString()} </Text>
+      </View>
       <TextInput
         style={[styles.itemInput, { backgroundColor: theme.colors.surface }]}
         mode="outlined"
@@ -67,7 +68,7 @@ export default function ItemScreen({ route }) {
           <View style={styles.itemContainer}>
             <Text style={styles.itemText}>{item.name}</Text>
             <TouchableOpacity onPress={() => removeItem(item.id)}>
-              <Ionicons name="trash-outline" size={24} style={{ color: theme.colors.onErrorContainer }}  />
+              <Ionicons name="trash-outline" size={24} style={{ color: theme.colors.onErrorContainer }} />
             </TouchableOpacity>
           </View>
         )}
@@ -91,9 +92,7 @@ const styles = StyleSheet.create({
   },
   itemInput: {
     width: '100%',
-
   },
-
   itemContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -101,15 +100,12 @@ const styles = StyleSheet.create({
     padding: 7,
     borderBottomWidth: 0.5,
   },
-
   itemText: {
     fontSize: 16
   },
-
   listText: {
     fontSize: 18
   },
-
   listDetail: {
     fontSize: 14,
     color: 'gray',
@@ -125,5 +121,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     marginTop: 10,
+  },
+  textContainer: {
+    marginBottom: 5,
+    borderRadius: 10,
+    padding: 10,
   },
 })

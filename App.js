@@ -84,7 +84,6 @@ export default function App() {
             <Tab.Navigator
               initialRouteName="List"
               screenOptions={({ route }) => ({
-                
                 headerStyle: {
                   backgroundColor: theme.colors.secondaryContainer,
                 },

@@ -125,7 +125,7 @@ const ListModal = ({ userId, hideModal, setVisible }) => {
         />
         
         <Button
-          theme={{ colors: { primary: theme.colors.primary } }}
+          theme={{ colors: { primary: theme.colors.primaryContainer } }}
           mode="contained"
           onPress={handleCreateList}
           style={styles.button}

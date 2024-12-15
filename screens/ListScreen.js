@@ -19,12 +19,12 @@ export default function ListScreen({ navigation }) {
   const showModal = () => setVisible(true)
 
   const hideModal = () =>
-    Alert.alert('Varoitus', 'Haluatko keskeyttää listan luomisen', [
+    Alert.alert('Warning', 'Do you want to stop creating the list?', [
       {
-        text: 'En',
+        text: 'No',
         style: 'cancel',
       },
-      { text: 'Kyllä', onPress: () => setVisible(false) },
+      { text: 'Yes', onPress: () => setVisible(false) },
     ])
 
 
@@ -66,12 +66,12 @@ export default function ListScreen({ navigation }) {
   }
 
   const deleteListAlert = (listId) => {
-    Alert.alert('Varoitus', 'Haluatko poistaa listan', [
+    Alert.alert('Warning', 'Do you want to delete the list?', [
       {
-        text: 'En',
+        text: 'No',
         style: 'cancel',
       },
-      { text: 'Kyllä', onPress: () => handleDeleteList(listId) },
+      { text: 'Yes', onPress: () => handleDeleteList(listId) },
     ])
   }
 
@@ -100,7 +100,7 @@ export default function ListScreen({ navigation }) {
               contentStyle={{ backgroundColor: theme.colors.primaryContainer,  }}
               labelStyle={{ color: theme.colors.onPrimaryContainer, fontSize: 16 }}
               >
-              Luo uusi lista
+              Create new list
             </Button>
           </View>
           <FlatList
@@ -111,7 +111,7 @@ export default function ListScreen({ navigation }) {
                 <TouchableOpacity onPress={() => navigation.navigate('Items', { listId: item.id, userId, listMetaData: item })}>
                   <Text variant="labelLarge" style={{ color: theme.colors.onSecondaryContainer }}>{item.name}</Text>
                   <Text variant="labelMedium" style={{ color: theme.colors.onSecondaryContainer }}>{item.matkaLuokka}</Text>
-                  <Text variant="labelMedium" style={{ color: theme.colors.onSecondaryContainer }}>Kohde: {item.matkanKohde}</Text>
+                  <Text variant="labelMedium" style={{ color: theme.colors.onSecondaryContainer }}>Location: {item.matkanKohde}</Text>
                   <Text variant="labelMedium" style={{ color: theme.colors.onSecondaryContainer }}>{item.range.startDate.toDate().toLocaleDateString()} - {item.range.endDate.toDate().toLocaleDateString()} </Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => deleteListAlert(item.id)}>

@@ -44,22 +44,25 @@ export default function ItemScreen({ route }) {
   return (
     <View style={[styles.itemContent, { backgroundColor: theme.colors.secondaryContainer }]}>
       <View style={[styles.textContainer, { backgroundColor: theme.colors.tertiaryContainer}]} >
-        <Text variant="labelLarge" style={{ color: theme.colors.onTertiaryContainer }}>Listan {listMetaData.name} tavarat</Text>
-        <Text variant="labelMedium" style={{ color: theme.colors.onTertiaryContainer }}>Tyyppi: {listMetaData.matkaLuokka}</Text>
-        <Text variant="labelMedium" style={{ color: theme.colors.onTertiaryContainer }}>Kohde: {listMetaData.matkanKohde}</Text>
+        <Text variant="labelLarge" style={{ color: theme.colors.onTertiaryContainer }}>Items of: {listMetaData.name}</Text>
+        <Text variant="labelMedium" style={{ color: theme.colors.onTertiaryContainer }}>Type: {listMetaData.matkaLuokka}</Text>
+        <Text variant="labelMedium" style={{ color: theme.colors.onTertiaryContainer }}>Location: {listMetaData.matkanKohde}</Text>
         <Text variant="labelMedium" style={{ color: theme.colors.onTertiaryContainer }}>{listMetaData.range.startDate.toDate().toLocaleDateString()} - {listMetaData.range.endDate.toDate().toLocaleDateString()} </Text>
       </View>
       <TextInput
         style={[styles.itemInput, { backgroundColor: theme.colors.surface }]}
         mode="outlined"
-        label="Lisää uusi tavara"
+        label="Type here"
         value={newItem}
         onChangeText={setNewItem}
       />
-      <Button theme={{ colors: { primary: theme.colors.primary } }}
+      <Button
+        theme={{ colors: { primary: theme.colors.primary } }}
+        contentStyle={{ backgroundColor: theme.colors.primaryContainer,  }}
+        labelStyle={{ color: theme.colors.onPrimaryContainer }}
         mode='elevated'
         onPress={addItem}>
-        Lisää tavara
+        Add item
       </Button>
       <FlatList style={[styles.tertiaryContainer, { backgroundColor: theme.colors.tertiaryContainer }]}
         data={items}

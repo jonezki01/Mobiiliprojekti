@@ -1,12 +1,8 @@
 import {MD3LightTheme, MD3DarkTheme } from 'react-native-paper'
+import { Colors } from "./BlueLight"
 
     const CustomLightTheme = {
-      ...MD3LightTheme,
-      colors: {
-        ...MD3LightTheme.colors,
-        headerBackground: '#d3d3d3',
-        secondaryContainer: '#e3c8e6',
-      },
+      ...MD3LightTheme, colors: Colors.light
     }
     
     const CustomDarkTheme = {

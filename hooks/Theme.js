@@ -6,12 +6,7 @@ import { Colors } from "./BlueLight"
     }
     
     const CustomDarkTheme = {
-      ...MD3DarkTheme,
-      colors: {
-        ...MD3DarkTheme.colors,
-        headerBackground: '#1e1e1e',
-        secondaryContainer: '#121212',
-      },
+      ...MD3DarkTheme, colors: Colors.dark
     }
     
     export default function useTheme(isDarkTheme) {

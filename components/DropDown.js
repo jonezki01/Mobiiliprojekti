@@ -1,28 +1,34 @@
 
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList, Modal, StyleSheet } from 'react-native';
-import { useTheme } from 'react-native-paper'
+import { useTheme, Button } from 'react-native-paper'
 
 const Dropdown = ({ items, selectedValue, onValueChange }) => {
     const [isVisible, setIsVisible] = useState(false);
     const theme = useTheme()
 
     const handleSelect = (item) => {
+        console.log('in Dropdown.js item', item);
         onValueChange(item.value);
         setIsVisible(false);
     };
 
     return (
         <View>
-            <TouchableOpacity onPress={() => setIsVisible(!isVisible)}>
-                <Text style={{ color: theme.colors.onTertiaryContainer}}>{selectedValue}</Text>
-            </TouchableOpacity>
-
+            <Button
+                mode="contained"
+                onPress={() => setIsVisible(!isVisible)}
+                theme={{ colors: { primary: theme.colors.primaryContainer } }}
+                labelStyle={{ color: theme.colors.onPrimaryContainer }}
+                style={styles.button}
+            >
+                {selectedValue}
+            </Button>
             {isVisible && (
                 <Modal transparent={true} animationType="slide">
                     <TouchableOpacity style={styles.overlay} onPress={() => setIsVisible(false)}>
                         <View style={styles.dropdown}>
-                            <FlatList style={[ styles.dropdownlist, { backgroundColor: theme.colors.tertiaryContainer }]}
+                            <FlatList style={[styles.dropdownlist, { backgroundColor: theme.colors.tertiaryContainer }]}
                                 data={items}
                                 keyExtractor={(item) => item.value}
                                 renderItem={({ item }) => (
@@ -69,6 +75,9 @@ const styles = StyleSheet.create({
     dropdownItem: {
         paddingVertical: 10,
         paddingHorizontal: 15,
+    },
+    button: {
+        width: '100%',
     },
 });
 

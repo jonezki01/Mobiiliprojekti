@@ -11,7 +11,7 @@ export default function SettingsScreen({ navigation, toggleTheme, isDarkTheme })
       <TouchableOpacity style={styles.settingItem} onPress={onPress}>
         <View style={styles.settingLabel}>
           <Icon name={icon} size={24} style={{ color: theme.colors.onTertiaryContainer }} />
-          <Text style={styles.settingText}>{label}</Text>
+          <Text style={[styles.settingText,{color: theme.colors.onTertiaryContainer}]}>{label}</Text>
         </View>
         <Icon name="chevron-right" style={{ color: theme.colors.onTertiaryContainer }} />
       </TouchableOpacity>

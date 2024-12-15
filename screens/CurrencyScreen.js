@@ -24,6 +24,7 @@ export default function CurrencyCalculator() {
         if (selectedValuuttaFrom && selectedValuuttaTo && CURRENCY_API_KEY) {
             console.log("Fetching conversion rate for:", selectedValuuttaFrom, "to", selectedValuuttaTo)
             const rateKey = `${selectedValuuttaFrom}_${selectedValuuttaTo}`
+            console.log("rateKey:", rateKey)
             fetchRate(rateKey)
         }
     }, [selectedValuuttaFrom, selectedValuuttaTo])
@@ -32,6 +33,7 @@ export default function CurrencyCalculator() {
     const fetchRate = (rateKey) => {
         console.log("rateKey:", rateKey, "Rates[rateKey]:", Rates[rateKey])
         if (!Rates[rateKey]) {
+            console.log("Fetching conversion rate in fetchRate for:", selectedValuuttaFrom, "to", selectedValuuttaTo)
             if (!CURRENCY_API_KEY) {
                 console.error("Currency API key not found. Please add it to your .env file.")
                 return
@@ -42,6 +44,7 @@ export default function CurrencyCalculator() {
                 currencies: selectedValuuttaTo
             })
                 .then((response) => {
+                    console.log("response:", response)
                     const rate = response.data?.[selectedValuuttaTo]?.value
                     if (rate) {
                         setRates((prevRate) => ({
@@ -116,15 +119,17 @@ export default function CurrencyCalculator() {
                     variant="labelMedium"
                     style={[styles.toptext, { color: theme.colors.onTertiaryContainer }]}
                 >Amount to convert</Text>
-                <View style={styles.componetRow}>
+                <View style={[styles.componetRow, { backgroundColor: theme.colors.tertiaryContainer }]}>
                     <LetterAvatar content={selectedValuuttaFrom.charAt(0)} />
-                    <View style={[styles.dropdowncontainer, { backgroundColor: theme.colors.surface }]}>
-                    <Dropdown
-                        items={Valuutta.map((currency) => ({ label: currency, value: currency }))}
-                        selectedValue={selectedValuuttaFrom}
-                        onValueChange={(value) => setSelectedValuuttaFrom(value)}
-                    />
+                    <View style={styles.dropdowncontainer}>
+                        <Dropdown
+                            items={Valuutta.map((currency) => ({ label: currency, value: currency }))}
+                            selectedValue={selectedValuuttaFrom}
+                            onValueChange={(value) => setSelectedValuuttaFrom(value)}
+                        />
                     </View>
+                </View>
+                <View style={styles.componetRow}>
                     <TextInput
                         style={[styles.input, { backgroundColor: theme.colors.surface }]}
                         value={fromAmount}
@@ -134,8 +139,8 @@ export default function CurrencyCalculator() {
                         keyboardType="numeric"
                         height={40}
                     />
-
                 </View>
+
             </View>
             <View style={[styles.component, { backgroundColor: theme.colors.tertiaryContainer }]}>
                 <Text
@@ -144,13 +149,16 @@ export default function CurrencyCalculator() {
                 >Converted amount</Text>
                 <View style={styles.componetRow}>
                     <LetterAvatar content={selectedValuuttaTo.charAt(0)} />
-                    <View style={[styles.dropdowncontainer, { backgroundColor: theme.colors.surface }]}>
-                    <Dropdown
-                        items={Valuutta.map((currency) => ({ label: currency, value: currency }))}
-                        selectedValue={selectedValuuttaTo}
-                        onValueChange={(value) => setSelectedValuuttaTo(value)}
-                    />
+                    <View style={styles.dropdowncontainer}>
+                        <Dropdown
+                            items={Valuutta.map((currency) => ({ label: currency, value: currency }))}
+                            selectedValue={selectedValuuttaTo}
+                            onValueChange={(value) => setSelectedValuuttaTo(value)}
+                        />
                     </View>
+
+                </View>
+                <View style={styles.componetRow}>
                     <TextInput
                         style={[styles.input, { backgroundColor: theme.colors.surface }]}
                         value={toAmount}
@@ -200,21 +208,17 @@ const styles = StyleSheet.create({
         alignContent: "center",
         justifyContent: "space-around",
         paddingHorizontal: 10,
-        paddingTop: 10,
-        paddingBottom: 40,
+        paddingTop: 5,
     },
     input: {
-        width: 140,
+        width: '100%',
         borderRadius: 5,
         fontSize: 12,
         height: 40,
         verticalAlign: 'center',
+        marginBottom: 10,
     },
     dropdowncontainer: {
-        width: 120,
-        borderRadius: 5,
-        height: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
+        width: '70%',
     },
 })

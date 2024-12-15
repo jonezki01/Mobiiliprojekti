@@ -19,6 +19,7 @@ const Dropdown = ({ items, selectedValue, onValueChange }) => {
                 mode="contained"
                 onPress={() => setIsVisible(!isVisible)}
                 theme={{ colors: { primary: theme.colors.primaryContainer } }}
+                labelStyle={{ color: theme.colors.onPrimaryContainer }}
                 style={styles.button}
             >
                 {selectedValue}

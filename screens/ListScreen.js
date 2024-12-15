@@ -115,7 +115,7 @@ export default function ListScreen({ navigation }) {
                   <Text variant="labelMedium" style={{ color: theme.colors.onSecondaryContainer }}>{item.range.startDate.toDate().toLocaleDateString()} - {item.range.endDate.toDate().toLocaleDateString()} </Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => deleteListAlert(item.id)}>
-                  <Ionicons name="trash-outline" size={24} style={{ color: theme.colors.onErrorContainer }} />
+                  <Ionicons name="trash-outline" size={24} style={{ color: theme.colors.onSecondaryContainer }} />
                 </TouchableOpacity>
               </View>
             )}

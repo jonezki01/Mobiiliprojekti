@@ -14,7 +14,7 @@ export default function Weather() {
 
   const theme = useTheme()
 
-  // Fetch weather by coordinates
+  // Fetch weather by coordinates.
   const fetchWeatherByCoords = async (latitude, longitude) => {
     setLoading(true)
     setError(null)
@@ -33,7 +33,7 @@ export default function Weather() {
     }
   }
 
-  // Fetch weather by city name
+  // Fetch weather by city name.
   const fetchWeather = async (city) => {
     setLoading(true)
     setError(null)
@@ -52,14 +52,14 @@ export default function Weather() {
     }
   }
 
-  // Handle city submit
+  // Handle city submit.
   const handleCitySubmit = () => {
     if (city.trim()) {
       fetchWeather(city)
     }
   }
 
-  // Fetch weather by location
+  // Fetch weather by location.
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync()

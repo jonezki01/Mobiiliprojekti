@@ -116,7 +116,7 @@ const ListModal = ({ userId, hideModal, setVisible }) => {
         </Button>
         
         <DatePickerModal
-          locale="fi"
+          locale="en"
           mode="range"
           visible={open}
           onDismiss={onDismiss}

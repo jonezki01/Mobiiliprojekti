@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, Image } from "react-native";
-import { useTheme, TextInput, Button } from 'react-native-paper'
+import { View, StyleSheet, Image } from "react-native";
+import { useTheme, TextInput, Button, Text } from 'react-native-paper'
 import logo from '../assets/modern_and_minimalist_logo.webp';
 
 
@@ -12,12 +12,12 @@ export default function Credits() {
         source={logo}
         style={styles.picture}
       />
-      <View style={[styles.toggleText, { color: theme.colors.tertiary }]}>
-        <Text style={styles.credits}>Credits:</Text>
-        <Text style={styles.name}>Jarno Tauriainen</Text>
-        <Text style={styles.name}>Johannes Vidkopp</Text>
-        <Text style={styles.name}>Joona Vilponen</Text>
-        <Text style={styles.name}>Tiina Mäntykivi</Text>
+      <View style={styles.toggleText}>
+        <Text style={[styles.credits, { color: theme.colors.onSecondaryContainer}]}>Credits:</Text>
+        <Text style={[styles.name, { color: theme.colors.onSecondaryContainer }]}>Jarno Tauriainen</Text>
+        <Text style={[styles.name, { color: theme.colors.onSecondaryContainer }]}>Johannes Vidkopp</Text>
+        <Text style={[styles.name, { color: theme.colors.onSecondaryContainer }]}>Joona Vilponen</Text>
+        <Text style={[styles.name, { color: theme.colors.onSecondaryContainer }]}>Tiina Mäntykivi</Text>
       </View>
     </View>
   );

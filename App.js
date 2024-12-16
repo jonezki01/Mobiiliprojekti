@@ -54,7 +54,10 @@ export default function App() {
   const SettingsStack = ({ toggleTheme, isDarkTheme }) =>{
     const Stack = createStackNavigator();
     return(
-      <Stack.Navigator>
+      <Stack.Navigator
+      screenOptions={{
+        headerTintColor: theme.colors.onSecondaryContainer,
+      }}>
       <Stack.Screen name="SettingsSubmenu"
       options={{ headerShown: false }}
       >

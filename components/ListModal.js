@@ -43,10 +43,10 @@ const ListModal = ({ userId, hideModal, setVisible }) => {
   }, [])
 
   const OPTIONS = [
-    { label: 'Lomamatka', value: 'Lomamatka' },
-    { label: 'Retkeily', value: 'Retkeily' },
-    { label: 'Metsästys', value: 'Metsästys' },
-    { label: 'Kalastus', value: 'Kalastus' },
+    { label: 'Vacation', value: 'Vacation' },
+    { label: 'Hiking', value: 'Hiking' },
+    { label: 'Hunting', value: 'Hunting' },
+    { label: 'Fishing', value: 'Fishing' },
   ]
 
   const handleCreateList = async () => {
@@ -79,7 +79,7 @@ const ListModal = ({ userId, hideModal, setVisible }) => {
         <TextInput
           theme={{ colors: { primary: theme.colors.primary } }}
           mode="outlined"
-          label="Listan nimi"
+          label="List name"
           value={listName}
           onChangeText={setListName}
           style={styles.input}
@@ -88,7 +88,7 @@ const ListModal = ({ userId, hideModal, setVisible }) => {
         <Dropdown
           theme={{ colors: { primary: theme.colors.primary } }}
           mode="outlined"
-          label="Matkan tarkoitus"
+          label="Travel class"
           placeholder="Valitse matka"
           options={OPTIONS}
           value={matkaLuokka}
@@ -99,11 +99,12 @@ const ListModal = ({ userId, hideModal, setVisible }) => {
           theme={{ colors: { primary: theme.colors.primary } }}
           style={styles.input}
           mode="outlined"
-          label="Matkan kohde"
+          label="Travel destination"
           value={matkanKohde}
           onChangeText={setMatkanKohde}
         />
         <Button
+          labelStyle={{ color: theme.colors.onPrimaryContainer }}
           onPress={() => setOpen(true)}
           uppercase={false}
           mode="outlined"
@@ -111,7 +112,7 @@ const ListModal = ({ userId, hideModal, setVisible }) => {
         >
           {range.startDate && range.endDate
             ? `${range.startDate.toLocaleDateString()} - ${range.endDate.toLocaleDateString()}`
-            : 'Valitse ajankohta'}
+            : 'Choose date range'}
         </Button>
         
         <DatePickerModal
@@ -126,11 +127,12 @@ const ListModal = ({ userId, hideModal, setVisible }) => {
         
         <Button
           theme={{ colors: { primary: theme.colors.primaryContainer } }}
+          labelStyle={{ color: theme.colors.onPrimaryContainer }}
           mode="contained"
           onPress={handleCreateList}
           style={styles.button}
         >
-          Luo lista
+          Create list
         </Button>
       
         <Button
@@ -140,7 +142,7 @@ const ListModal = ({ userId, hideModal, setVisible }) => {
           style={styles.button}
      
         >
-          Keskeytä
+          Cancel
         </Button>
       </View>
     </View>

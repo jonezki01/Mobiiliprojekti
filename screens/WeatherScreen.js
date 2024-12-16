@@ -96,7 +96,7 @@ export default function Weather() {
         <View style={[styles.tertiaryContainer, { backgroundColor: theme.colors.tertiaryContainer }]}>
           {!error && weatherData && (
           <>
-            <Text style={[{ color: theme.colors.tertiary }]}>Sää nyt</Text>
+            <Text style={[{ color: theme.colors.tertiary }]}>Weather</Text>
             <Text style={[{ color: theme.colors.tertiary }]}>{weatherData.name}, {weatherData.sys.country}</Text>
             <Text style={[{ color: theme.colors.tertiary }]}>{weatherData.main.temp}°C</Text>
             <Text style={[{ color: theme.colors.tertiary }]}>{weatherData.weather[0].description}</Text>

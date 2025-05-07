@@ -1,69 +1,68 @@
-# 🌍 Matkailijan Mobiilisovellus
+# Mobiiliprojekti
 
+A mobile application developed using React Native, integrating Firebase for backend services.
+This project is a fork of [TVT23KMO-R14-MOBIILIKEHITYSPROJEKTI/Mobiiliprojekti](https://github.com/TVT23KMO-R14-MOBIILIKEHITYSPROJEKTI/Mobiiliprojekti).
 
-All-in-one -sovellus matkailijoille!
-Tämän mobiilisovelluksen avulla voit:
+## Features
 
-    ✅ Tehdä ja hallinnoida pakkauslistoja
+* **User Authentication**: Secure login and registration using Firebase Authentication.
+* **Real-time Database**: Data storage and retrieval using Firebase Firestore.
+* **Modular Architecture**: Organized codebase with reusable components and hooks.
+* **Custom Styling**: Consistent UI design with centralized styling.
+* **CI/CD Integration**: Automated builds and deployments using Codemagic.
 
-    💱 Tarkistaa reaaliaikaiset valuuttakurssit
+## Project Structure
 
-    🌤️ Nähdä ajantasaiset säätiedot
+```
+assets/           # Static assets like images and fonts
+components/       # Reusable UI components
+firestore/        # Firebase Firestore configuration and queries
+helper/           # Utility functions and helpers
+hooks/            # Custom React hooks
+screens/          # Application screens and navigation
+styles/           # Global and component-specific styles
+support-files/    # Additional support files and configurations
+App.js            # Root component
+app.json          # App configuration
+codemagic.yaml    # CI/CD pipeline configuration
+index.js          # Entry point
+```
 
-    🌙 Käyttää sovellusta myös dark mode -tilassa
+## Getting Started
 
-## 🚀 Ominaisuudet
-### 📋 Pakkauslistat
+### Prerequisites
 
-    Luo eri listoja matkoillesi
+* Node.js and npm
+* Expo CLI or React Native CLI
+* Firebase project setup
 
-    Lisää ja poista tuotteita helposti
+### Installation
 
-    Poista kokonaisia listoja tarpeen mukaan
+1. **Clone the repository:**
 
-<table>
-  <tr>
-    <td align="center">
-      <strong>Demo listan luomisesta</strong><br />
-      <img src="/assets/lista.gif" width="200" />
-    </td>
-    <td>
-    </td>
-    <td align="center">
-      <strong>Demo listan hallinnoinista</strong><br />
-      <img src="/assets/listatuotteetjapoisto.gif" width="200" />
-    </td>
-  </tr>
-</table>
+```bash
+git clone https://github.com/jonezki01/Mobiiliprojekti.git
+cd Mobiiliprojekti
+```
 
-### 💱 Valuuttamuunnin
+2. **Install dependencies:**
 
-    Tarkista eri maiden valuuttakurssit reaaliaikaisesti
+```bash
+npm install
+```
 
-Demo valuuttamuuntimesta
+3. **Configure Firebase:**
 
-<img src="/assets/currency.gif" width="200" />
+Set up your Firebase project and replace the configuration in `firestore/` with your project's credentials.
 
-### 🌤️ Sääpalvelu
+4. **Run the application:**
 
-    Näe nykyinen sää ja lämpötila sijainnin mukaan
+```bash
+npm start
+```
 
-Demo sääsovelluksesta
+## Technologies Used
 
-<img src="/assets/weather.gif" width="200" />
-
-### 🌙 Dark Mode
-
-    Käytettävissä myös pimeässä tilassa silmien säästämiseksi
-
-Demo dark moden käytöstä
-
-<img src="/assets/darkmode.gif" width="200" />
-
-### 🛠️ Teknologiat
-
-    React Native (Expo)
-
-    Firestore (datan tallennus)
-
-    API-integraatiot valuutta- ja sääpalveluihin
+* **React Native** – for building the mobile application
+* **Firebase** – for backend services like auth and database
+* **Codemagic** – for continuous integration and deployment

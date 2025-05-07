@@ -61,6 +61,30 @@ Set up your Firebase project and replace the configuration in `firestore/` with 
 npm start
 ```
 
+### 💱 Currency Converter
+
+    Check real-time exchange rates between different countries
+
+Currency converter demo
+
+<img src="/assets/currency.gif" width="200" />
+
+### 🌤️ Weather Service
+
+    See the current weather and temperature based on your location
+
+Weather app demo
+
+<img src="/assets/weather.gif" width="200" />
+
+### 🌙 Dark Mode
+
+    Available in dark mode to reduce eye strain
+
+Dark mode demo
+
+<img src="/assets/darkmode.gif" width="200" />
+
 ## Technologies Used
 
 * **React Native** – for building the mobile application
